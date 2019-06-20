@@ -1,8 +1,8 @@
 // @APIVersion 1.0.0
-// @Title beego Test API
-// @Description beego has a very cool tools to autogenerate documents for your API
-// @Contact astaxie@gmail.com
-// @TermsOfServiceUrl http://beego.me/
+// @Title API's for Lagos State SME Hub
+// @Description This is developed using Beego, and should be consumed by only developers in GPI
+// @Contact endy.apina@my-gpi.io
+// @TermsOfServiceUrl http://my-gpi.io/
 // @License Apache 2.0
 // @LicenseUrl http://www.apache.org/licenses/LICENSE-2.0.html
 package routers
@@ -23,6 +23,11 @@ func init() {
 		beego.NSNamespace("/user",
 			beego.NSInclude(
 				&controllers.UserController{},
+			),
+		),
+		beego.NSNamespace("/admin",
+			beego.NSInclude(
+				&controllers.AdminController{},
 			),
 		),
 	)
