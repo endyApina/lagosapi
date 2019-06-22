@@ -1,0 +1,87 @@
+2019/06/21 17:15:47.424 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 17:15:48.068 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 17:15:49.810 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      998.7µs|   match|[44m GET     [0m /swagger/
+2019/06/21 17:15:49.823 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 17:15:49.832 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     6.9814ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 17:15:49.833 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     8.9764ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 17:15:50.278 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 17:15:50.297 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      998.3µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 17:19:40.513 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 17:24:47.518 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 17:24:48.299 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     1.0083ms|   match|[44m GET     [0m /swagger/
+2019/06/21 17:24:48.312 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 17:24:48.317 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     4.9861ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 17:24:48.317 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     4.9861ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 17:24:49.168 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      988.9µs|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 17:24:49.184 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      998.6µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 17:29:23.039 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 17:29:40.010 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/
+2019/06/21 17:29:40.027 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      997.9µs|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 17:29:40.031 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     3.9886ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 17:29:40.033 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     5.9953ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 17:29:40.273 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 17:29:40.401 [D] [server.go:2774]  |            ::1|[42m 200 [0m|        966µs|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 17:29:40.419 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 17:36:15.924 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 17:36:53.910 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 17:36:55.859 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/
+2019/06/21 17:36:55.872 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 17:36:55.876 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     3.9894ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 17:36:55.877 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     4.9869ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 17:36:56.763 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      990.5µs|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 17:36:56.779 [D] [server.go:2774]  |            ::1|[42m 200 [0m|        998µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 17:42:41.418 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|           0s|   match|[46m POST    [0m /v1/admin/sub/   r:/v1/admin/sub
+2019/06/21 19:16:09.070 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 19:16:18.702 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/
+2019/06/21 19:16:18.719 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     1.0049ms|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 19:16:18.724 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     4.9782ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 19:16:18.725 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     6.9827ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 19:16:24.438 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      998.1µs|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 19:16:24.456 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      997.6µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 19:18:40.992 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 19:18:41.465 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      996.6µs|   match|[44m GET     [0m /swagger/
+2019/06/21 19:18:41.479 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     1.9952ms|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 19:18:41.482 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     2.9915ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 19:18:41.483 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     5.9827ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 19:18:42.425 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      996.8µs|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 19:18:42.442 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 19:19:08.559 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 19:19:08.589 [D] [server.go:2774]  |      127.0.0.1|[47m 304 [0m|        965µs|   match|[44m GET     [0m /swagger/
+2019/06/21 19:19:08.882 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      997.5µs|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 19:19:09.152 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      998.3µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 19:19:51.194 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 19:19:51.352 [D] [server.go:2774]  |            ::1|[47m 304 [0m|      997.5µs|   match|[44m GET     [0m /swagger/
+2019/06/21 19:19:51.486 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 19:19:51.749 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      997.1µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 19:33:22.160 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|     2.0135ms|   match|[46m POST    [0m /v1/admin/sub/   r:/v1/admin/sub/
+2019/06/21 19:34:00.839 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|     2.9926ms|   match|[46m POST    [0m /v1/admin/sub/   r:/v1/admin/sub/
+2019/06/21 19:34:23.693 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|     1.9952ms|   match|[46m POST    [0m /v1/admin/sub/   r:/v1/admin/sub/
+2019/06/21 20:43:23.031 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 20:43:23.253 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      878.5µs|   match|[44m GET     [0m /swagger/
+2019/06/21 20:43:23.283 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     1.0645ms|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 20:43:23.291 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     7.9779ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 20:43:23.291 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     7.9779ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 20:43:23.677 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      544.5µs|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 20:43:23.719 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      997.2µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 20:49:43.628 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 20:49:46.167 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     2.0329ms|   match|[44m GET     [0m /swagger/
+2019/06/21 20:49:46.203 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     1.0013ms|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 20:49:46.211 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     4.9831ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 20:49:46.213 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     8.9758ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 20:49:46.480 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      245.8µs|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 20:49:46.508 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      998.8µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 20:50:21.612 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 20:50:40.012 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     1.0007ms|   match|[44m GET     [0m /swagger/
+2019/06/21 20:50:40.038 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     1.0773ms|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 20:50:40.045 [D] [server.go:2774]  |            ::1|[42m 200 [0m|       5.98ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 20:50:40.045 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     6.9844ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 20:50:40.332 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 20:50:40.370 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      442.5µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 20:50:42.673 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/21 20:52:16.484 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     1.0012ms|   match|[44m GET     [0m /swagger/
+2019/06/21 20:52:16.511 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      998.5µs|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/21 20:52:16.517 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     4.9849ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/21 20:52:16.517 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     4.9849ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/21 20:52:16.813 [D] [server.go:2774]  |            ::1|[42m 200 [0m|        998µs|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/21 20:52:16.845 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      999.5µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/21 20:52:20.294 [I] [asm_amd64.s:1337]  http server Running on http://:6700

@@ -20,15 +20,16 @@ func init() {
 //User struct shows models for users
 type User struct {
 	gorm.Model
-	FullName string `gorm:"type:varchar(100)" json:"FullName"`
-	Username string `gorm:"type:varchar(100) unique" json:"Username"`
-	Password string `gorm:"type:varchar(100)" json:"Password"`
-	Gender   string `gorm:"type:varchar(100)" json:"Gender"`
-	DOB      string `gorm:"type:varchar(100)" json:"DOB"`
-	Street   string `gorm:"type:varchar(100)" json:"Street"`
-	City     string `gorm:"type:varchar(100)" json:"City"`
-	Country  string `gorm:"type:varchar(100)" json:"Country"`
-	Email    string `gorm:"type:varchar(100); unique_index" json:"Email"`
+	FullName string `gorm:"type:varchar(100)" json:"full_name"`
+	Username string `gorm:"type:varchar(100) unique" json:"username"`
+	Password string `gorm:"type:varchar(100)" json:"password"`
+	Gender   string `gorm:"type:varchar(100)" json:"gender"`
+	DOB      string `gorm:"type:varchar(100)" json:"dob"`
+	Street   string `gorm:"type:varchar(100)" json:"street"`
+	City     string `gorm:"type:varchar(100)" json:"city"`
+	Country  string `gorm:"type:varchar(100)" json:"country"`
+	Email    string `gorm:"type:varchar(100); unique_index" json:"email"`
+	Role     int    `gorm:"type:int(10)" json:"role"`
 }
 
 //AddUser creates a new user.
@@ -43,9 +44,20 @@ func AddUser(u User) interface{} {
 		checkUsername := Conn.Where("username = ?", u.Username).Find(&u)
 		if checkUsername != nil && checkUsername.Error != nil {
 			//If Email and Username doesn't exist.
+			if u.Role != 55 {
+				responseData := Response(403, "Unauthorized Role")
+
+				return responseData
+			}
 			Conn.Create(&u)
 
-			return u
+			Conn.AutoMigrate(&Roles{})
+			getDefaultRole := CreateDefaultRole(u)
+			Conn.Create(&getDefaultRole)
+
+			returnData := AssociateRoleUser(getDefaultRole, u)
+
+			return returnData
 		} else {
 			responseData := Response(200, "Username already exists")
 			return responseData

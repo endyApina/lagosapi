@@ -29,20 +29,93 @@ type Admin struct {
 	Email    string `gorm:"type:varchar(100)" json:"Email"`
 }
 
-func AddAdmin(a Admin) interface{} {
-	Conn.AutoMigrate(&Admin{})
+func AddAdmin(a User) interface{} {
+	Conn.AutoMigrate(&User{})
+	Conn.AutoMigrate(&Roles{})
+	var r Roles
 
-	findEmail := Conn.Where("username = ?", a.Username).Find(&a)
+	findEmail := Conn.Where("email = ?", a.Email).Find(&a)
+
+	//If email doesn't exist, proceed to check if username exist
 	if findEmail != nil && findEmail.Error != nil {
-		addAdmin := Conn.Create(&a)
-		if addAdmin != nil && addAdmin.Error != nil {
-			panic(addAdmin.Error)
+		checkUsername := Conn.Where("username = ?", a.Username).Find(&a)
+		if checkUsername != nil && checkUsername.Error != nil {
+			//If Email and Username doesn't exist.
+			if a.Role == 99 {
+				checkSuperAdmin := Conn.Where("code = ?", a.Role).Find(&r)
+				if checkSuperAdmin != nil && checkSuperAdmin.Error != nil {
+					Conn.Create(&a)
+					role := CreateDefaultRole(a)
+					Conn.Create(&role)
+
+					responseData := AssociateRoleUser(role, a)
+					return responseData
+				} else {
+					responseData := Response(403, "Super Admin Already Exists")
+					return responseData
+				}
+			}
+
+			responseData := Response(403, "Forbidden")
+			return responseData
+		} else {
+			responseData := Response(403, "Username already exists")
+			return responseData
+		}
+	} else {
+		responseData := Response(403, "Email already exists")
+		return responseData
+	}
+}
+
+func CreateSubAdmin(api ApiData) interface{} {
+	admin := api.User
+	sub := api.Body
+
+	checkUsername := CheckUsername(sub)
+	if checkUsername != false {
+		responseData := Response(403, "Username already exists")
+		return responseData
+	}
+
+	ifAdminExists := CheckUserExists(admin)
+	if ifAdminExists != true {
+		responseData := Response(403, "Admin Doesn't exist")
+		return responseData
+	}
+
+	ifSuperAdmin := CheckSuperAdmin(admin)
+	if ifSuperAdmin != true {
+		responseData := Response(401, "Unauthorized, Cannot create Admin")
+		return responseData
+	}
+
+	ifSubAdminExists := CheckUserExists(sub)
+	if ifSubAdminExists == true {
+		if sub.Role != 88 {
+			responseData := Response(403, "Forbidden, Not a Sub Admin")
+			return responseData
 		}
 
-		return a
+		ifSubAdmin := CheckSubAdmin(sub)
+		if ifSubAdmin == true {
+			responseData := Response(403, "Forbidden, User already a Sub Admin")
+			return responseData
+		}
 
+		role := CreateDefaultRole(sub)
+		Conn.Create(&role)
+		responseData := GetUserRoles(sub)
+		return responseData
 	}
-	return 0
+
+	Conn.Create(&sub)
+	role := CreateDefaultRole(sub)
+	Conn.Create(&role)
+
+	responseData := GetUserRoles(sub)
+	return responseData
+
 }
 
 func GetAdmin(uid string) (u *Admin, err error) {

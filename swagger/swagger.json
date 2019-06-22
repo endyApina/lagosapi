@@ -44,16 +44,127 @@
                         "description": "body for admin content",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/models.Admin"
+                            "$ref": "#/definitions/models.User"
                         }
                     }
                 ],
                 "responses": {
                     "200": {
-                        "description": "{int} models.Admin.Id"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponsePackage"
+                        }
                     },
                     "403": {
                         "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/admin/sub/": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "get all Sub Admins",
+                "operationId": "AdminController.ALlSubAdmins",
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponsePackage"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "Create more sub Admins .",
+                "operationId": "AdminController.SubAdmin",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for admin content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ApiData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponsePackage"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
+                    }
+                }
+            }
+        },
+        "/admin/sub/{uid}": {
+            "put": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "update the Sub Admin",
+                "operationId": "AdminController.UpdateSubAdmin",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The uid you want to update",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for user content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.ResponsePackage"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    },
+                    "403": {
+                        "description": ":uid is not int"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "delete the sub admin",
+                "operationId": "AdminController.DeleteSubAdmin",
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "uid",
+                        "description": "The uid you want to delete",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} delete success!"
+                    },
+                    "403": {
+                        "description": "uid is empty"
                     }
                 }
             }
@@ -470,36 +581,15 @@
             "title": "Model",
             "type": "object"
         },
-        "models.Admin": {
-            "title": "Admin",
+        "models.ApiData": {
+            "title": "ApiData",
             "type": "object",
             "properties": {
-                "City": {
-                    "type": "string"
+                "body": {
+                    "$ref": "#/definitions/models.User"
                 },
-                "Country": {
-                    "type": "string"
-                },
-                "DOB": {
-                    "type": "string"
-                },
-                "Email": {
-                    "type": "string"
-                },
-                "FullName": {
-                    "type": "string"
-                },
-                "Gender": {
-                    "type": "string"
-                },
-                "Password": {
-                    "type": "string"
-                },
-                "Street": {
-                    "type": "string"
-                },
-                "Username": {
-                    "type": "string"
+                "user": {
+                    "$ref": "#/definitions/models.User"
                 }
             }
         },
@@ -519,18 +609,53 @@
                 }
             }
         },
+        "models.ResponseBody": {
+            "title": "ResponseBody",
+            "type": "object",
+            "properties": {
+                "roles": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/models.Roles"
+                    }
+                },
+                "user": {
+                    "$ref": "#/definitions/models.User"
+                }
+            }
+        },
         "models.ResponsePackage": {
             "title": "ResponsePackage",
             "type": "object",
             "properties": {
-                "Body": {
-                    "$ref": "#/definitions/models.User"
+                "body": {
+                    "$ref": "#/definitions/models.ResponseBody"
                 },
+                "code": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Roles": {
+            "title": "Roles",
+            "type": "object",
+            "properties": {
                 "Code": {
                     "type": "integer",
                     "format": "int64"
                 },
-                "Status": {
+                "Role": {
+                    "type": "string"
+                },
+                "UserID": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "UserName": {
                     "type": "string"
                 }
             }
@@ -539,31 +664,35 @@
             "title": "User",
             "type": "object",
             "properties": {
-                "City": {
+                "city": {
                     "type": "string"
                 },
-                "Country": {
+                "country": {
                     "type": "string"
                 },
-                "DOB": {
+                "dob": {
                     "type": "string"
                 },
-                "Email": {
+                "email": {
                     "type": "string"
                 },
-                "FullName": {
+                "full_name": {
                     "type": "string"
                 },
-                "Gender": {
+                "gender": {
                     "type": "string"
                 },
-                "Password": {
+                "password": {
                     "type": "string"
                 },
-                "Street": {
+                "role": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "street": {
                     "type": "string"
                 },
-                "Username": {
+                "username": {
                     "type": "string"
                 }
             }

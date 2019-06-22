@@ -27,6 +27,15 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
+            Method: "Delete",
+            Router: `/:uid`,
+            AllowHTTPMethods: []string{"delete"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
+        beego.ControllerComments{
             Method: "Get",
             Router: `/:uid`,
             AllowHTTPMethods: []string{"get"},
@@ -45,8 +54,35 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
-            Method: "Delete",
-            Router: `/:uid`,
+            Method: "GetAllSubAdmins",
+            Router: `/sub/`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
+        beego.ControllerComments{
+            Method: "CreateSubAdmin",
+            Router: `/sub/`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
+        beego.ControllerComments{
+            Method: "UpdateSubAdmin",
+            Router: `/sub/:uid`,
+            AllowHTTPMethods: []string{"put"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
+        beego.ControllerComments{
+            Method: "DeleteSubAdmin",
+            Router: `/sub/:uid`,
             AllowHTTPMethods: []string{"delete"},
             MethodParams: param.Make(),
             Filters: nil,
