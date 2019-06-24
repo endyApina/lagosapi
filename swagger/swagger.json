@@ -20,7 +20,7 @@
                 "tags": [
                     "admin"
                 ],
-                "description": "get all Users",
+                "description": "get all Industry in the database",
                 "operationId": "AdminController.GetAll",
                 "responses": {
                     "200": {
@@ -314,7 +314,7 @@
                 }
             }
         },
-        "/user/addidea": {
+        "/user/addidea/": {
             "post": {
                 "tags": [
                     "user"
@@ -628,6 +628,10 @@
         {
             "name": "admin",
             "description": "AdminController handles admin controller\n"
+        },
+        {
+            "name": "industry",
+            "description": "IndustryController handles admin controller\n"
         }
     ]
 }

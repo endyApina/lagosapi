@@ -143,7 +143,7 @@ func (u *UserController) Logout() {
 // @Param	body		body 	models.APIData	true		"body to add new Business Idea"
 // @Success 200 {object} models.ResponsePackage
 // @Failure 403 body is empty
-// @router /addidea [post]
+// @router /addidea/ [post]
 func (u *UserController) AddIdea() {
 	var user models.User
 	err := json.Unmarshal(u.Ctx.Input.RequestBody, &user)

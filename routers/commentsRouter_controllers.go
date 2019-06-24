@@ -9,6 +9,15 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
+            Method: "GetAllIndustry",
+            Router: `/`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
+        beego.ControllerComments{
             Method: "GetAll",
             Router: `/`,
             AllowHTTPMethods: []string{"get"},
@@ -145,7 +154,7 @@ func init() {
     beego.GlobalControllerRouter["lagosapi/controllers:UserController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:UserController"],
         beego.ControllerComments{
             Method: "AddIdea",
-            Router: `/addidea`,
+            Router: `/addidea/`,
             AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,

@@ -16,7 +16,7 @@ paths:
     get:
       tags:
       - admin
-      description: get all Users
+      description: get all Industry in the database
       operationId: AdminController.GetAll
       responses:
         "200":
@@ -267,7 +267,7 @@ paths:
           description: '{string} delete success!'
         "403":
           description: uid is empty
-  /user/addidea:
+  /user/addidea/:
     post:
       tags:
       - user
@@ -419,3 +419,6 @@ tags:
 - name: admin
   description: |
     AdminController handles admin controller
+- name: industry
+  description: |
+    IndustryController handles admin controller

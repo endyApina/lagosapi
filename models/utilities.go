@@ -2,6 +2,9 @@ package models
 
 import (
 	//mysql driver
+	"encoding/csv"
+	"os"
+
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
@@ -34,6 +37,21 @@ type APIData struct {
 	Body User `json:"body"`
 }
 
+//BusinessIdea hold data for Adding an Idea
+type BusinessIdea struct {
+	gorm.Model
+	UserID   int    `gorm:"type:int(10)" json:"user_id" form:"user_id"`
+	UserName string `gorm:"type:varchar(100)" json:"user_name" form:"user_name"`
+	BusName  string `gorm:"type:varchar(100)" json:"bus_name" form:"bus_name"`
+	Email    string `gorm:"type:varchar(100)" json:"email" form:"email"`
+	Pitch    string `gorm:"type:varchar(100)" json:"pitch" form:"pitch"`
+	Fund     string `gorm:"type:varchar(100)" json:"fund" form:"fund"`
+	Industry string `gorm:"type:varchar(100)" json:"industry" form:"industry"`
+	Vision   string `gorm:"type:varchar(100)" json:"vision" form:"vision"`
+	Mission  string `gorm:"type:varchar(100)" json:"mission" form:"mission"`
+	Document string `gorm:"type:varchar(100)" json:"document" form:"document"`
+}
+
 //DB stores new DB configuration
 var DB = new(DBConfig)
 
@@ -52,6 +70,38 @@ func init() {
 	}
 
 	Conn = conn
+
+	//////////////********** Upload Industry Data *************/////////////////
+
+	var i Industry
+	Conn.AutoMigrate(&Industry{})
+	checkIndustries := Conn.Find(&i)
+	if checkIndustries != nil && checkIndustries.Error != nil {
+		industryCSV, err := os.Open("files/industries/industries.csv")
+		if err != nil {
+			panic(err)
+		}
+
+		file := csv.NewReader(industryCSV)
+		file.FieldsPerRecord = -1
+		rawCSV, err := file.ReadAll()
+		if err != nil {
+			panic(err)
+		}
+		var counter uint
+		counter = 0
+
+		for _, industry := range rawCSV {
+			counter++
+			i.ID = counter
+			i.Industry = industry[0]
+			Conn.Create(&i)
+		}
+
+		return
+	}
+
+	/////////////END of Industry section /////////////////
 
 }
 

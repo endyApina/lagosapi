@@ -30,6 +30,11 @@ func init() {
 				&controllers.AdminController{},
 			),
 		),
+		beego.NSNamespace("/industry",
+			beego.NSInclude(
+				&controllers.IndustryController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }
