@@ -7,11 +7,13 @@ import (
 )
 
 var (
+	//Objects returns an array of Objects sturct
 	Objects map[string]*Object
 )
 
+//Object struct handles object data
 type Object struct {
-	ObjectId   string
+	ObjectID   string
 	Score      int64
 	PlayerName string
 }
@@ -22,32 +24,36 @@ func init() {
 	Objects["mjjkxsxsaa23"] = &Object{"mjjkxsxsaa23", 101, "someone"}
 }
 
-func AddOne(object Object) (ObjectId string) {
-	object.ObjectId = "astaxie" + strconv.FormatInt(time.Now().UnixNano(), 10)
-	Objects[object.ObjectId] = &object
-	return object.ObjectId
+//AddOne adds one
+func AddOne(object Object) (ObjectID string) {
+	object.ObjectID = "astaxie" + strconv.FormatInt(time.Now().UnixNano(), 10)
+	Objects[object.ObjectID] = &object
+	return object.ObjectID
 }
 
-func GetOne(ObjectId string) (object *Object, err error) {
-	if v, ok := Objects[ObjectId]; ok {
+//GetOne gets one
+func GetOne(ObjectID string) (object *Object, err error) {
+	if v, ok := Objects[ObjectID]; ok {
 		return v, nil
 	}
-	return nil, errors.New("ObjectId Not Exist")
+	return nil, errors.New("ObjectID Not Exist")
 }
 
+//GetAll gets all
 func GetAll() map[string]*Object {
 	return Objects
 }
 
-func Update(ObjectId string, Score int64) (err error) {
-	if v, ok := Objects[ObjectId]; ok {
+//Update updates
+func Update(ObjectID string, Score int64) (err error) {
+	if v, ok := Objects[ObjectID]; ok {
 		v.Score = Score
 		return nil
 	}
-	return errors.New("ObjectId Not Exist")
+	return errors.New("ObjectID Not Exist")
 }
 
-func Delete(ObjectId string) {
-	delete(Objects, ObjectId)
+//Delete delets
+func Delete(ObjectID string) {
+	delete(Objects, ObjectID)
 }
-

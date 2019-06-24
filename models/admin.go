@@ -7,6 +7,7 @@ import (
 )
 
 var (
+	//AdminList is houses an array of Admin objects
 	AdminList map[string]*Admin
 )
 
@@ -16,6 +17,7 @@ func init() {
 	// UserList["user_11111"] = &u
 }
 
+//Admin struct holds admin object
 type Admin struct {
 	gorm.Model
 	FullName string `gorm:"type:varchar(100)" json:"FullName"`
@@ -29,46 +31,45 @@ type Admin struct {
 	Email    string `gorm:"type:varchar(100)" json:"Email"`
 }
 
+//AddAdmin function adds a new super admin to the system
 func AddAdmin(a User) interface{} {
-	Conn.AutoMigrate(&User{})
-	Conn.AutoMigrate(&Roles{})
 	var r Roles
 
-	findEmail := Conn.Where("email = ?", a.Email).Find(&a)
+	Conn.AutoMigrate(&User{})
+	Conn.AutoMigrate(&Roles{})
 
-	//If email doesn't exist, proceed to check if username exist
-	if findEmail != nil && findEmail.Error != nil {
-		checkUsername := Conn.Where("username = ?", a.Username).Find(&a)
-		if checkUsername != nil && checkUsername.Error != nil {
-			//If Email and Username doesn't exist.
-			if a.Role == 99 {
-				checkSuperAdmin := Conn.Where("code = ?", a.Role).Find(&r)
-				if checkSuperAdmin != nil && checkSuperAdmin.Error != nil {
-					Conn.Create(&a)
-					role := CreateDefaultRole(a)
-					Conn.Create(&role)
-
-					responseData := AssociateRoleUser(role, a)
-					return responseData
-				} else {
-					responseData := Response(403, "Super Admin Already Exists")
-					return responseData
-				}
-			}
-
-			responseData := Response(403, "Forbidden")
-			return responseData
-		} else {
-			responseData := Response(403, "Username already exists")
-			return responseData
-		}
-	} else {
-		responseData := Response(403, "Email already exists")
+	supadminexist := DoesSupAdminExist()
+	if supadminexist == true {
+		responseData := Response(401, "Unauthorized, Super Admin already exist")
 		return responseData
 	}
+
+	userExist := CheckUserExists(a)
+	if userExist == true {
+		role := CreateDefaultRole(a)
+		Conn.Where("user_id = ?", a.ID).Delete(&r)
+		Conn.Create(&role)
+
+		responseData := AssociateRoleUser(role, a)
+		return responseData
+	}
+
+	checkUsername := CheckUsername(a)
+	if checkUsername == true {
+		responseData := Response(403, "Username already Exists")
+		return responseData
+	}
+
+	Conn.Create(&a)
+	role := CreateDefaultRole(a)
+	Conn.Create(&role)
+
+	responseData := AssociateRoleUser(role, a)
+	return responseData
 }
 
-func CreateSubAdmin(api ApiData) interface{} {
+//CreateSubAdmin creates a new admin to the system
+func CreateSubAdmin(api APIData) interface{} {
 	admin := api.User
 	sub := api.Body
 
@@ -118,6 +119,7 @@ func CreateSubAdmin(api ApiData) interface{} {
 
 }
 
+//GetAdmin returns the information of admin with uid
 func GetAdmin(uid string) (u *Admin, err error) {
 	if u, ok := AdminList[uid]; ok {
 		return u, nil
@@ -125,10 +127,24 @@ func GetAdmin(uid string) (u *Admin, err error) {
 	return nil, errors.New("Admin not exists")
 }
 
-func GetAllAdmin() map[string]*Admin {
-	return AdminList
+//GetAllAdmin returns list of all admins
+func GetAllAdmin() interface{} {
+	var rolesArray []Roles
+	Conn.Where("code = 99").Or("code = 88").Find(&rolesArray)
+
+	allAdmin := GetUserFromRole(rolesArray)
+	return allAdmin
 }
 
+//GetAllSupAdmin gets all super admin
+func GetAllSupAdmin() []*Roles {
+	var roleArray []*Roles
+	Conn.Where("code = 99").Find(&roleArray)
+
+	return roleArray
+}
+
+//UpdateAdmin edits or update admin records.
 func UpdateAdmin(uid string, uu *Admin) (a *Admin, err error) {
 	if u, ok := AdminList[uid]; ok {
 		if uu.Username != "" {

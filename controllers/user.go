@@ -39,7 +39,7 @@ func (u *UserController) Post() {
 //GetAll gets all Users in the System
 // @Title GetAll
 // @Description get all Users
-// @Success 200 {object} models.User
+// @Success 200 {object} []models.User
 // @router / [get]
 func (u *UserController) GetAll() {
 	users := models.GetAllUsers()
@@ -134,5 +134,29 @@ func (u *UserController) Login() {
 // @router /logout [get]
 func (u *UserController) Logout() {
 	u.Data["json"] = "logout success"
+	u.ServeJSON()
+}
+
+//AddIdea adds a new business idea to the user profile
+// @Title AddIdea
+// @Description create new Ideas
+// @Param	body		body 	models.APIData	true		"body to add new Business Idea"
+// @Success 200 {object} models.ResponsePackage
+// @Failure 403 body is empty
+// @router /addidea [post]
+func (u *UserController) AddIdea() {
+	var user models.User
+	err := json.Unmarshal(u.Ctx.Input.RequestBody, &user)
+	if err != nil {
+		responseData := models.Response(200, "Invalid JSON format")
+
+		u.Data["json"] = responseData
+		u.ServeJSON()
+
+		return
+	}
+	addUserMessage := models.AddUser(user)
+	responseData := models.ValidResponse(200, addUserMessage)
+	u.Data["json"] = responseData
 	u.ServeJSON()
 }

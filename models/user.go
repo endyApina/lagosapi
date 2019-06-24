@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	//UserList
+	//UserList returns an array of Users struct
 	UserList map[string]*User
 )
 
@@ -58,14 +58,12 @@ func AddUser(u User) interface{} {
 			returnData := AssociateRoleUser(getDefaultRole, u)
 
 			return returnData
-		} else {
-			responseData := Response(200, "Username already exists")
-			return responseData
 		}
-	} else {
-		responseData := Response(200, "Email already exists")
+		responseData := Response(200, "Username already exists")
 		return responseData
 	}
+	responseData := Response(200, "Email already exists")
+	return responseData
 }
 
 //GetUser retrieves user data using ID
@@ -129,7 +127,7 @@ func UpdateUser(uid string, uu *User) (a *User, err error) {
 func Login(username, password string) interface{} {
 	var u User
 	findEmail := Conn.Where("email = ?", username).Find(&u)
-
+	//If Email doesn't exisit
 	if findEmail != nil && findEmail.Error != nil {
 		findUsername := Conn.Where("username = ?", username).Find(&u)
 		if findUsername != nil && findUsername.Error != nil {
@@ -144,14 +142,13 @@ func Login(username, password string) interface{} {
 
 		return u
 
-	} else {
-		if u.Password != password {
-			responseData := Response(200, "Incorrect Details")
-			return responseData
-		}
-
-		return u
 	}
+	if u.Password != password {
+		responseData := Response(200, "Incorrect Details")
+		return responseData
+	}
+
+	return u
 }
 
 //DeleteUser deletes user

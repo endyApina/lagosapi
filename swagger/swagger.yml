@@ -22,11 +22,56 @@ paths:
         "200":
           description: ""
           schema:
+            type: array
+            items:
+              $ref: '#/definitions/models.ResponseObject'
+  /admin/sub/:
+    get:
+      tags:
+      - admin
+      description: get all Sub Admins
+      operationId: AdminController.AllSubAdmins
+      responses:
+        "200":
+          description: ""
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/models.ResponseObject'
+    post:
+      tags:
+      - admin
+      description: Create more sub Admins .
+      operationId: AdminController.SubAdmin
+      parameters:
+      - in: body
+        name: body
+        description: body for admin content
+        required: true
+        schema:
+          $ref: '#/definitions/models.APIData'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.ResponsePackage'
+        "403":
+          description: body is empty
+  /admin/sup/:
+    get:
+      tags:
+      - admin
+      description: Get all Super Administrative users
+      operationId: AdminController.GetSupAdmin
+      responses:
+        "200":
+          description: ""
+          schema:
             $ref: '#/definitions/models.User'
     post:
       tags:
       - admin
-      description: Create more administrative users.
+      description: Create more super administrative users.
       operationId: AdminController.CreateAdmin
       parameters:
       - in: body
@@ -42,136 +87,6 @@ paths:
             $ref: '#/definitions/models.ResponsePackage'
         "403":
           description: body is empty
-  /admin/{uid}:
-    get:
-      tags:
-      - admin
-      description: get user by uid
-      operationId: AdminController.Get
-      parameters:
-      - in: path
-        name: uid
-        description: The key for staticblock
-        required: true
-        type: string
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.User'
-        "403":
-          description: :uid is empty
-    put:
-      tags:
-      - admin
-      description: update the user
-      operationId: AdminController.Update
-      parameters:
-      - in: path
-        name: uid
-        description: The uid you want to update
-        required: true
-        type: string
-      - in: body
-        name: body
-        description: body for user content
-        required: true
-        schema:
-          $ref: '#/definitions/models.User'
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.User'
-        "403":
-          description: :uid is not int
-    delete:
-      tags:
-      - admin
-      description: delete the user
-      operationId: AdminController.Delete
-      parameters:
-      - in: path
-        name: uid
-        description: The uid you want to delete
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{string} delete success!'
-        "403":
-          description: uid is empty
-  /admin/sub/:
-    get:
-      tags:
-      - admin
-      description: get all Sub Admins
-      operationId: AdminController.ALlSubAdmins
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.ResponsePackage'
-    post:
-      tags:
-      - admin
-      description: Create more sub Admins .
-      operationId: AdminController.SubAdmin
-      parameters:
-      - in: body
-        name: body
-        description: body for admin content
-        required: true
-        schema:
-          $ref: '#/definitions/models.ApiData'
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.ResponsePackage'
-        "403":
-          description: body is empty
-  /admin/sub/{uid}:
-    put:
-      tags:
-      - admin
-      description: update the Sub Admin
-      operationId: AdminController.UpdateSubAdmin
-      parameters:
-      - in: path
-        name: uid
-        description: The uid you want to update
-        required: true
-        type: string
-      - in: body
-        name: body
-        description: body for user content
-        required: true
-        schema:
-          $ref: '#/definitions/models.ResponsePackage'
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.User'
-        "403":
-          description: :uid is not int
-    delete:
-      tags:
-      - admin
-      description: delete the sub admin
-      operationId: AdminController.DeleteSubAdmin
-      parameters:
-      - in: path
-        name: uid
-        description: The uid you want to delete
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{string} delete success!'
-        "403":
-          description: uid is empty
   /object/:
     get:
       tags:
@@ -271,7 +186,9 @@ paths:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.User'
+            type: array
+            items:
+              $ref: '#/definitions/models.User'
     post:
       tags:
       - user
@@ -350,6 +267,26 @@ paths:
           description: '{string} delete success!'
         "403":
           description: uid is empty
+  /user/addidea:
+    post:
+      tags:
+      - user
+      description: create new Ideas
+      operationId: UserController.AddIdea
+      parameters:
+      - in: body
+        name: body
+        description: body to add new Business Idea
+        required: true
+        schema:
+          $ref: '#/definitions/models.APIData'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.ResponsePackage'
+        "403":
+          description: body is empty
   /user/login:
     get:
       tags:
@@ -385,8 +322,8 @@ definitions:
   gorm.Model:
     title: Model
     type: object
-  models.ApiData:
-    title: ApiData
+  models.APIData:
+    title: APIData
     type: object
     properties:
       body:
@@ -397,7 +334,7 @@ definitions:
     title: Object
     type: object
     properties:
-      ObjectId:
+      ObjectID:
         type: string
       PlayerName:
         type: string
@@ -412,6 +349,14 @@ definitions:
         type: array
         items:
           $ref: '#/definitions/models.Roles'
+      user:
+        $ref: '#/definitions/models.User'
+  models.ResponseObject:
+    title: ResponseObject
+    type: object
+    properties:
+      role:
+        $ref: '#/definitions/models.Roles'
       user:
         $ref: '#/definitions/models.User'
   models.ResponsePackage:
@@ -429,15 +374,15 @@ definitions:
     title: Roles
     type: object
     properties:
-      Code:
+      code:
         type: integer
         format: int64
-      Role:
+      role:
         type: string
-      UserID:
+      user_id:
         type: integer
         format: int32
-      UserName:
+      user_name:
         type: string
   models.User:
     title: User
@@ -471,3 +416,6 @@ tags:
 - name: user
   description: |
     UserController handles all operations about Users
+- name: admin
+  description: |
+    AdminController handles admin controller
