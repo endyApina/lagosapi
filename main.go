@@ -1,6 +1,7 @@
 package main
 
 import (
+	"lagosapi/controllers"
 	_ "lagosapi/routers"
 
 	"github.com/astaxie/beego"
@@ -23,6 +24,8 @@ func main() {
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
+
+	beego.InsertFilter("/v1/", beego.BeforeRouter, controllers.ValidateToken)
 
 	beego.Run()
 }

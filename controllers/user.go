@@ -3,6 +3,7 @@ package controllers
 import (
 	"encoding/json"
 	"lagosapi/models"
+	"log"
 
 	"github.com/astaxie/beego"
 )
@@ -120,9 +121,14 @@ func (u *UserController) Login() {
 	username := u.GetString("username")
 	password := u.GetString("password")
 
-	loginMessage := models.Login(username, password)
-	responseData := models.ValidResponse(200, loginMessage)
-	u.Data["json"] = responseData
+	code, user := models.Login(username, password)
+	if code != 200 {
+		log.Println("Error")
+	}
+	tokenString := models.GetTokenString(username)
+	// responseData := models.ValidResponse(200, user)
+	response := models.APIResponse(code, user, tokenString)
+	u.Data["json"] = response
 
 	u.ServeJSON()
 }

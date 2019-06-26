@@ -9,7 +9,7 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
-            Method: "GetAllIndustry",
+            Method: "GetAll",
             Router: `/`,
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
@@ -18,7 +18,7 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
-            Method: "GetAll",
+            Method: "GetAllIndustry",
             Router: `/`,
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),

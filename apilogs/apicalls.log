@@ -10,3 +10,140 @@
 2019/06/25 09:13:08.400 [I] [asm_amd64.s:1337]  http server Running on http://:6700
 2019/06/25 09:13:10.205 [I] [asm_amd64.s:1337]  http server Running on http://:6700
 2019/06/25 09:13:12.036 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:16:09.187 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:17:55.600 [D] [server.go:2774]  |            ::1|[42m 200 [0m|        997µs|   match|[44m GET     [0m /swagger/
+2019/06/25 10:17:55.613 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      997.1µs|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/25 10:17:55.620 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      7.978ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/25 10:17:55.621 [D] [server.go:2774]  |            ::1|[42m 200 [0m|       7.98ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/25 10:17:55.963 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/25 10:17:55.984 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      998.5µs|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/25 10:19:12.128 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      4.987ms|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 10:19:28.236 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      979.7µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 10:19:39.507 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      997.6µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 10:22:13.602 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:22:32.437 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|     1.9959ms|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 10:23:02.191 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:23:05.953 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      1.995ms|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 10:26:36.433 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:30:50.412 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:30:58.478 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      998.1µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 10:34:04.278 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:34:16.130 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      999.4µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 10:34:29.277 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:34:59.909 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:35:07.825 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      998.4µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 10:35:41.114 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:35:42.457 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      995.8µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 10:40:47.369 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 10:40:52.571 [C] [panic.go:522]  the request url is  /v1/user/login
+2019/06/25 10:40:52.572 [C] [panic.go:522]  Handler crashed with error key is of invalid type
+2019/06/25 10:40:52.572 [C] [panic.go:522]  C:/Go/src/runtime/panic.go:522
+2019/06/25 10:40:52.573 [C] [panic.go:522]  C:/Users/apina/go/src/lagosapi/models/utilities.go:292
+2019/06/25 10:40:52.573 [C] [panic.go:522]  C:/Users/apina/go/src/lagosapi/models/user.go:143
+2019/06/25 10:40:52.574 [C] [panic.go:522]  C:/Users/apina/go/src/lagosapi/controllers/user.go:123
+2019/06/25 10:40:52.574 [C] [panic.go:522]  C:/Go/src/reflect/value.go:447
+2019/06/25 10:40:52.574 [C] [panic.go:522]  C:/Go/src/reflect/value.go:308
+2019/06/25 10:40:52.576 [C] [panic.go:522]  C:/Users/apina/go/src/github.com/astaxie/beego/router.go:853
+2019/06/25 10:40:52.576 [C] [panic.go:522]  C:/Go/src/net/http/server.go:2774
+2019/06/25 10:40:52.576 [C] [panic.go:522]  C:/Go/src/net/http/server.go:1878
+2019/06/25 10:40:52.576 [C] [panic.go:522]  C:/Go/src/runtime/asm_amd64.s:1337
+2019/06/25 10:40:52.577 [server.go:3010]  [HTTP] http: superfluous response.WriteHeader call from github.com/astaxie/beego/context.(*Response).WriteHeader (context.go:230)
+2019/06/25 11:01:46.100 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:01:46.265 [C] [panic.go:522]  the request url is  /v1/user/login
+2019/06/25 11:01:46.265 [C] [panic.go:522]  Handler crashed with error key is of invalid type
+2019/06/25 11:01:46.266 [C] [panic.go:522]  C:/Go/src/runtime/panic.go:522
+2019/06/25 11:01:46.266 [C] [panic.go:522]  C:/Users/apina/go/src/lagosapi/models/user.go:147
+2019/06/25 11:01:46.266 [C] [panic.go:522]  C:/Users/apina/go/src/lagosapi/controllers/user.go:123
+2019/06/25 11:01:46.267 [C] [panic.go:522]  C:/Go/src/reflect/value.go:447
+2019/06/25 11:01:46.267 [C] [panic.go:522]  C:/Go/src/reflect/value.go:308
+2019/06/25 11:01:46.267 [C] [panic.go:522]  C:/Users/apina/go/src/github.com/astaxie/beego/router.go:853
+2019/06/25 11:01:46.268 [C] [panic.go:522]  C:/Go/src/net/http/server.go:2774
+2019/06/25 11:01:46.268 [C] [panic.go:522]  C:/Go/src/net/http/server.go:1878
+2019/06/25 11:01:46.268 [C] [panic.go:522]  C:/Go/src/runtime/asm_amd64.s:1337
+2019/06/25 11:01:46.269 [server.go:3010]  [HTTP] http: superfluous response.WriteHeader call from github.com/astaxie/beego/context.(*Response).WriteHeader (context.go:230)
+2019/06/25 11:02:36.622 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:12:02.598 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:12:02.987 [C] [panic.go:522]  the request url is  /v1/user/login
+2019/06/25 11:12:02.987 [C] [panic.go:522]  Handler crashed with error key is of invalid type
+2019/06/25 11:12:02.987 [C] [panic.go:522]  C:/Go/src/runtime/panic.go:522
+2019/06/25 11:12:02.988 [C] [panic.go:522]  C:/Users/apina/go/src/lagosapi/controllers/user.go:127
+2019/06/25 11:12:02.988 [C] [panic.go:522]  C:/Go/src/reflect/value.go:447
+2019/06/25 11:12:02.988 [C] [panic.go:522]  C:/Go/src/reflect/value.go:308
+2019/06/25 11:12:02.989 [C] [panic.go:522]  C:/Users/apina/go/src/github.com/astaxie/beego/router.go:853
+2019/06/25 11:12:02.989 [C] [panic.go:522]  C:/Go/src/net/http/server.go:2774
+2019/06/25 11:12:02.989 [C] [panic.go:522]  C:/Go/src/net/http/server.go:1878
+2019/06/25 11:12:02.989 [C] [panic.go:522]  C:/Go/src/runtime/asm_amd64.s:1337
+2019/06/25 11:12:02.990 [server.go:3010]  [HTTP] http: superfluous response.WriteHeader call from github.com/astaxie/beego/context.(*Response).WriteHeader (context.go:230)
+2019/06/25 11:12:20.440 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:12:30.509 [C] [panic.go:522]  the request url is  /v1/user/login
+2019/06/25 11:12:30.510 [C] [panic.go:522]  Handler crashed with error key is of invalid type
+2019/06/25 11:12:30.511 [C] [panic.go:522]  C:/Go/src/runtime/panic.go:522
+2019/06/25 11:12:30.511 [C] [panic.go:522]  C:/Users/apina/go/src/lagosapi/controllers/user.go:127
+2019/06/25 11:12:30.512 [C] [panic.go:522]  C:/Go/src/reflect/value.go:447
+2019/06/25 11:12:30.512 [C] [panic.go:522]  C:/Go/src/reflect/value.go:308
+2019/06/25 11:12:30.513 [C] [panic.go:522]  C:/Users/apina/go/src/github.com/astaxie/beego/router.go:853
+2019/06/25 11:12:30.513 [C] [panic.go:522]  C:/Go/src/net/http/server.go:2774
+2019/06/25 11:12:30.514 [C] [panic.go:522]  C:/Go/src/net/http/server.go:1878
+2019/06/25 11:12:30.514 [C] [panic.go:522]  C:/Go/src/runtime/asm_amd64.s:1337
+2019/06/25 11:12:30.515 [server.go:3010]  [HTTP] http: superfluous response.WriteHeader call from github.com/astaxie/beego/context.(*Response).WriteHeader (context.go:230)
+2019/06/25 11:29:24.995 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:29:39.770 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:29:44.421 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      998.9µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 11:48:47.299 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:50:25.796 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:50:27.170 [C] [panic.go:522]  the request url is  /v1/user/login
+2019/06/25 11:50:27.171 [C] [panic.go:522]  Handler crashed with error key is of invalid type
+2019/06/25 11:50:27.172 [C] [panic.go:522]  C:/Go/src/runtime/panic.go:522
+2019/06/25 11:50:27.172 [C] [panic.go:522]  C:/Users/apina/go/src/lagosapi/models/utilities.go:292
+2019/06/25 11:50:27.173 [C] [panic.go:522]  C:/Users/apina/go/src/lagosapi/controllers/user.go:124
+2019/06/25 11:50:27.173 [C] [panic.go:522]  C:/Go/src/reflect/value.go:447
+2019/06/25 11:50:27.173 [C] [panic.go:522]  C:/Go/src/reflect/value.go:308
+2019/06/25 11:50:27.174 [C] [panic.go:522]  C:/Users/apina/go/src/github.com/astaxie/beego/router.go:853
+2019/06/25 11:50:27.174 [C] [panic.go:522]  C:/Go/src/net/http/server.go:2774
+2019/06/25 11:50:27.174 [C] [panic.go:522]  C:/Go/src/net/http/server.go:1878
+2019/06/25 11:50:27.175 [C] [panic.go:522]  C:/Go/src/runtime/asm_amd64.s:1337
+2019/06/25 11:50:27.175 [server.go:3010]  [HTTP] http: superfluous response.WriteHeader call from github.com/astaxie/beego/context.(*Response).WriteHeader (context.go:230)
+2019/06/25 11:51:13.763 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:51:14.726 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|           0s|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 11:52:22.878 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 11:52:23.932 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      998.4µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 12:14:07.551 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 12:14:10.048 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      998.7µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 12:16:02.405 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 12:16:04.773 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|     1.9958ms|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 12:20:04.453 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 12:20:08.092 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|     1.9951ms|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 13:34:58.487 [D] [server.go:2774]  |   172.30.50.77|[43m 404 [0m|           0s| nomatch|[44m GET     [0m /  
+2019/06/25 13:34:58.613 [D] [server.go:2774]  |   172.30.50.77|[43m 404 [0m|           0s| nomatch|[44m GET     [0m /favicon.ico
+2019/06/25 13:35:06.424 [D] [server.go:2774]  |   172.30.50.77|[47m 302 [0m|           0s|   match|[44m GET     [0m /swagger
+2019/06/25 13:35:08.134 [D] [server.go:2774]  |   172.30.50.77|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/
+2019/06/25 13:35:11.201 [D] [server.go:2774]  |   172.30.50.77|[42m 200 [0m|     1.8767ms|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/06/25 13:35:12.679 [D] [server.go:2774]  |   172.30.50.77|[42m 200 [0m|   1.1167312s|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/06/25 13:35:19.316 [D] [server.go:2774]  |   172.30.50.77|[42m 200 [0m|   8.0026066s|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/06/25 13:35:19.685 [D] [server.go:2774]  |   172.30.50.77|[42m 200 [0m|     1.7838ms|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/25 13:35:19.685 [D] [server.go:2774]  |   172.30.50.77|[42m 200 [0m|     1.7838ms|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/25 13:38:12.768 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 13:40:30.363 [D] [server.go:2774]  |   172.30.50.77|[47m 304 [0m|           0s|   match|[44m GET     [0m /swagger/
+2019/06/25 13:40:30.492 [D] [server.go:2774]  |   172.30.50.77|[42m 200 [0m|     1.0411ms|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/25 13:44:16.563 [D] [server.go:2774]  |   172.30.50.77|[47m 304 [0m|      955.7µs|   match|[44m GET     [0m /swagger/
+2019/06/25 13:44:16.777 [D] [server.go:2774]  |   172.30.50.77|[42m 200 [0m|     2.0378ms|   match|[44m GET     [0m /swagger/swagger.json
+2019/06/25 13:44:16.869 [D] [server.go:2774]  |   172.30.50.77|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/favicon-32x32.png
+2019/06/25 15:40:53.625 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 15:41:03.406 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      1.995ms|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 15:41:49.318 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 15:41:52.234 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      999.3µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 15:43:37.405 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 15:43:58.986 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 15:50:18.327 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 15:58:46.212 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 16:17:56.665 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 16:28:44.146 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 16:28:50.395 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|      997.4µs|   match|[44m GET     [0m /v1/user/login   r:/v1/user/login
+2019/06/25 17:16:30.911 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 17:16:35.467 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 17:31:28.567 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 17:31:34.699 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 17:32:10.480 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 17:38:35.288 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 17:39:32.995 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/06/25 18:11:37.114 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      997.8µs|   match|[44m GET     [0m /swagger/swagger.json

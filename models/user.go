@@ -124,31 +124,28 @@ func UpdateUser(uid string, uu *User) (a *User, err error) {
 }
 
 //Login handles login
-func Login(username, password string) interface{} {
+func Login(username, password string) (code int, user User) {
 	var u User
 	findEmail := Conn.Where("email = ?", username).Find(&u)
 	//If Email doesn't exisit
 	if findEmail != nil && findEmail.Error != nil {
 		findUsername := Conn.Where("username = ?", username).Find(&u)
 		if findUsername != nil && findUsername.Error != nil {
-			responseData := Response(200, "Email or Username doesn't exist")
-			return responseData
+			return 404, u
 		}
 
 		if u.Password != password {
-			responseData := Response(200, "Incorrect Details")
-			return responseData
+			return 401, u
 		}
 
-		return u
+		return 200, u
 
 	}
 	if u.Password != password {
-		responseData := Response(200, "Incorrect Details")
-		return responseData
+		return 401, u
 	}
 
-	return u
+	return 200, u
 }
 
 //DeleteUser deletes user

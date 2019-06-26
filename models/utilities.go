@@ -1,10 +1,17 @@
 package models
 
 import (
-	//mysql driver
 	"encoding/csv"
+	"fmt"
+	"log"
 	"os"
+	"time"
 
+	"github.com/astaxie/beego"
+
+	//mysql driver
+
+	jwt "github.com/dgrijalva/jwt-go"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
@@ -117,8 +124,8 @@ type Roles struct {
 //Response sends bad response data to you
 func Response(code int, message string) interface{} {
 	type Message struct {
-		Code int
-		Body string
+		Code int    `json:"code"`
+		Body string `json:"body"`
 	}
 
 	var responseData Message
@@ -131,9 +138,9 @@ func Response(code int, message string) interface{} {
 //ValidResponse sends valid response to the frontend
 func ValidResponse(code int, responseText interface{}) interface{} {
 	type responseObject struct {
-		Code   int
-		Body   interface{}
-		Status string
+		Code   int         `json:"code"`
+		Body   interface{} `json:"body"`
+		Status string      `json:"status"`
 		// Role uint
 	}
 
@@ -144,6 +151,22 @@ func ValidResponse(code int, responseText interface{}) interface{} {
 	// sendResponse.Role = role
 
 	return sendResponse
+}
+
+//APIResponse handles the object to be sent back
+func APIResponse(code int, body interface{}, token string) interface{} {
+	type response struct {
+		Code  int         `json:"code"`
+		Body  interface{} `json:"body"`
+		Token string      `json:"token"`
+	}
+
+	var send response
+	send.Code = code
+	send.Body = body
+	send.Token = token
+
+	return send
 }
 
 //CreateDefaultRole create default role of 00 for regular users
@@ -259,4 +282,50 @@ func GetUserFromRole(roleArray []Roles) interface{} {
 	}
 
 	return res
+}
+
+//AddUserToken adds a token to a user in a struct
+func AddUserToken(u User, token string) interface{} {
+	type userToken struct {
+		User  User   `json:"user"`
+		Token string `json:"string"`
+	}
+
+	var uToken userToken
+	uToken.User = u
+	uToken.Token = token
+
+	return uToken
+}
+
+//GetTokenString generates and returns a string.
+func GetTokenString(username string) string {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"secret": username,
+		"time":   time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(beego.AppConfig.String("jwtkey")))
+	if err != nil {
+		panic(err)
+	}
+
+	return tokenString
+}
+
+//ValidateToken validate tokenString
+var ValidateToken = func(tokenString string, username string) {
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
+		}
+
+		return []byte(beego.AppConfig.String("jwtkey")), nil
+	})
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		log.Println(claims["secret"], claims["time"])
+	} else {
+		log.Println(err)
+	}
 }
