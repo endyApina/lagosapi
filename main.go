@@ -18,14 +18,15 @@ func main() {
 	}
 
 	beego.InsertFilter("*", beego.BeforeRouter, cors.Allow(&cors.Options{
-		AllowOrigins:     []string{"*"},
-		AllowMethods:     []string{"*"},
-		AllowHeaders:     []string{"Origin"},
+		AllowAllOrigins:  false,
+		AllowOrigins:     []string{"http://localhost:4201"},
+		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Access-control-allow-origin", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 	}))
 
-	beego.InsertFilter("/v1/", beego.BeforeRouter, controllers.ValidateToken)
+	beego.InsertFilter("/v1/*", beego.BeforeRouter, controllers.ValidateToken)
 
 	beego.Run()
 }

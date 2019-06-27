@@ -44,7 +44,7 @@ func AddUser(u User) interface{} {
 		checkUsername := Conn.Where("username = ?", u.Username).Find(&u)
 		if checkUsername != nil && checkUsername.Error != nil {
 			//If Email and Username doesn't exist.
-			if u.Role != 55 {
+			if u.Role != 00 {
 				responseData := Response(403, "Unauthorized Role")
 
 				return responseData
@@ -54,15 +54,17 @@ func AddUser(u User) interface{} {
 			Conn.AutoMigrate(&Roles{})
 			getDefaultRole := CreateDefaultRole(u)
 			Conn.Create(&getDefaultRole)
+			tokenString := GetTokenString(u.Username)
+			getRoles := AssociateRoleUser(getDefaultRole, u)
 
-			returnData := AssociateRoleUser(getDefaultRole, u)
+			returnData := APIResponse(200, getRoles, tokenString)
 
 			return returnData
 		}
-		responseData := Response(200, "Username already exists")
+		responseData := Response(401, "Username already exists")
 		return responseData
 	}
-	responseData := Response(200, "Email already exists")
+	responseData := Response(401, "Email already exists")
 	return responseData
 }
 

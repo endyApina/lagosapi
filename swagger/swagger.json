@@ -35,6 +35,42 @@
                 }
             }
         },
+        "/admin/login": {
+            "get": {
+                "tags": [
+                    "admin"
+                ],
+                "description": "Logs user into the system",
+                "operationId": "AdminController.Login",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "username",
+                        "description": "The username for login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.APIResponseData"
+                        }
+                    },
+                    "403": {
+                        "description": "user not exist"
+                    }
+                }
+            }
+        },
         "/admin/sub/": {
             "get": {
                 "tags": [
@@ -99,7 +135,9 @@
                         }
                     }
                 }
-            },
+            }
+        },
+        "/admin/sup/register": {
             "post": {
                 "tags": [
                     "admin"
@@ -121,7 +159,7 @@
                     "200": {
                         "description": "",
                         "schema": {
-                            "$ref": "#/definitions/models.ResponsePackage"
+                            "$ref": "#/definitions/models.APIResponseData"
                         }
                     },
                     "403": {
@@ -283,38 +321,9 @@
                         }
                     }
                 }
-            },
-            "post": {
-                "tags": [
-                    "user"
-                ],
-                "description": "create users",
-                "operationId": "UserController.CreateUser",
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "description": "body for user content",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/models.User"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "",
-                        "schema": {
-                            "$ref": "#/definitions/models.ResponsePackage"
-                        }
-                    },
-                    "403": {
-                        "description": "body is empty"
-                    }
-                }
             }
         },
-        "/user/addidea/": {
+        "/user/idea/add": {
             "post": {
                 "tags": [
                     "user"
@@ -345,8 +354,36 @@
                 }
             }
         },
+        "/user/invite": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "description": "Invites other admin users to join the system",
+                "operationId": "UserController.Invite Sub Admin",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "A json containing the role {int}, email {string}, tokenString",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Invite"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} invitation sent!"
+                    },
+                    "403": {
+                        "description": "user not exist"
+                    }
+                }
+            }
+        },
         "/user/login": {
-            "get": {
+            "post": {
                 "tags": [
                     "user"
                 ],
@@ -370,7 +407,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "{string} login success"
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.APIResponseData"
+                        }
                     },
                     "403": {
                         "description": "user not exist"
@@ -388,6 +428,37 @@
                 "responses": {
                     "200": {
                         "description": "{string} logout success"
+                    }
+                }
+            }
+        },
+        "/user/register": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "description": "create users",
+                "operationId": "UserController.CreateUser",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "body for user content",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.User"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.APIResponseData"
+                        }
+                    },
+                    "403": {
+                        "description": "body is empty"
                     }
                 }
             }
@@ -496,6 +567,38 @@
                 },
                 "user": {
                     "$ref": "#/definitions/models.User"
+                }
+            }
+        },
+        "models.APIResponseData": {
+            "title": "APIResponseData",
+            "type": "object",
+            "properties": {
+                "body": {
+                    "$ref": "#/definitions/models.ResponseBody"
+                },
+                "code": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "models.Invite": {
+            "title": "Invite",
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "token": {
+                    "type": "string"
                 }
             }
         },

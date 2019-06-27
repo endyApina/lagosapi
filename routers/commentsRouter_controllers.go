@@ -9,6 +9,15 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
+            Method: "GetAllIndustry",
+            Router: `/`,
+            AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
+        beego.ControllerComments{
             Method: "GetAll",
             Router: `/`,
             AllowHTTPMethods: []string{"get"},
@@ -18,8 +27,8 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
-            Method: "GetAllIndustry",
-            Router: `/`,
+            Method: "AdminLogin",
+            Router: `/login`,
             AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
@@ -45,18 +54,18 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
-            Method: "CreateSupAdmin",
+            Method: "GetSupAdmin",
             Router: `/sup/`,
-            AllowHTTPMethods: []string{"post"},
+            AllowHTTPMethods: []string{"get"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
-            Method: "GetSupAdmin",
-            Router: `/sup/`,
-            AllowHTTPMethods: []string{"get"},
+            Method: "CreateSupAdmin",
+            Router: `/sup/register`,
+            AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
@@ -102,15 +111,6 @@ func init() {
             Method: "Delete",
             Router: `/:objectId`,
             AllowHTTPMethods: []string{"delete"},
-            MethodParams: param.Make(),
-            Filters: nil,
-            Params: nil})
-
-    beego.GlobalControllerRouter["lagosapi/controllers:UserController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:UserController"],
-        beego.ControllerComments{
-            Method: "Post",
-            Router: `/`,
-            AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
@@ -154,7 +154,16 @@ func init() {
     beego.GlobalControllerRouter["lagosapi/controllers:UserController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:UserController"],
         beego.ControllerComments{
             Method: "AddIdea",
-            Router: `/addidea/`,
+            Router: `/idea/add`,
+            AllowHTTPMethods: []string{"post"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:UserController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:UserController"],
+        beego.ControllerComments{
+            Method: "InviteSubAdmin",
+            Router: `/invite`,
             AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
@@ -164,7 +173,7 @@ func init() {
         beego.ControllerComments{
             Method: "Login",
             Router: `/login`,
-            AllowHTTPMethods: []string{"get"},
+            AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})
@@ -174,6 +183,15 @@ func init() {
             Method: "Logout",
             Router: `/logout`,
             AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:UserController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:UserController"],
+        beego.ControllerComments{
+            Method: "Post",
+            Router: `/register`,
+            AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

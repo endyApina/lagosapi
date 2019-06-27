@@ -25,6 +25,30 @@ paths:
             type: array
             items:
               $ref: '#/definitions/models.ResponseObject'
+  /admin/login:
+    get:
+      tags:
+      - admin
+      description: Logs user into the system
+      operationId: AdminController.Login
+      parameters:
+      - in: query
+        name: username
+        description: The username for login
+        required: true
+        type: string
+      - in: query
+        name: password
+        description: The password for login
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.APIResponseData'
+        "403":
+          description: user not exist
   /admin/sub/:
     get:
       tags:
@@ -68,6 +92,7 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/models.User'
+  /admin/sup/register:
     post:
       tags:
       - admin
@@ -84,7 +109,7 @@ paths:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.ResponsePackage'
+            $ref: '#/definitions/models.APIResponseData'
         "403":
           description: body is empty
   /object/:
@@ -189,25 +214,6 @@ paths:
             type: array
             items:
               $ref: '#/definitions/models.User'
-    post:
-      tags:
-      - user
-      description: create users
-      operationId: UserController.CreateUser
-      parameters:
-      - in: body
-        name: body
-        description: body for user content
-        required: true
-        schema:
-          $ref: '#/definitions/models.User'
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.ResponsePackage'
-        "403":
-          description: body is empty
   /user/{uid}:
     get:
       tags:
@@ -267,7 +273,7 @@ paths:
           description: '{string} delete success!'
         "403":
           description: uid is empty
-  /user/addidea/:
+  /user/idea/add:
     post:
       tags:
       - user
@@ -287,8 +293,26 @@ paths:
             $ref: '#/definitions/models.ResponsePackage'
         "403":
           description: body is empty
+  /user/invite:
+    post:
+      tags:
+      - user
+      description: Invites other admin users to join the system
+      operationId: UserController.Invite Sub Admin
+      parameters:
+      - in: body
+        name: body
+        description: A json containing the role {int}, email {string}, tokenString
+        required: true
+        schema:
+          $ref: '#/definitions/models.Invite'
+      responses:
+        "200":
+          description: '{string} invitation sent!'
+        "403":
+          description: user not exist
   /user/login:
-    get:
+    post:
       tags:
       - user
       description: Logs user into the system
@@ -306,7 +330,9 @@ paths:
         type: string
       responses:
         "200":
-          description: '{string} login success'
+          description: ""
+          schema:
+            $ref: '#/definitions/models.APIResponseData'
         "403":
           description: user not exist
   /user/logout:
@@ -318,6 +344,26 @@ paths:
       responses:
         "200":
           description: '{string} logout success'
+  /user/register:
+    post:
+      tags:
+      - user
+      description: create users
+      operationId: UserController.CreateUser
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.APIResponseData'
+        "403":
+          description: body is empty
 definitions:
   gorm.Model:
     title: Model
@@ -330,6 +376,28 @@ definitions:
         $ref: '#/definitions/models.User'
       user:
         $ref: '#/definitions/models.User'
+  models.APIResponseData:
+    title: APIResponseData
+    type: object
+    properties:
+      body:
+        $ref: '#/definitions/models.ResponseBody'
+      code:
+        type: integer
+        format: int64
+      token:
+        type: string
+  models.Invite:
+    title: Invite
+    type: object
+    properties:
+      email:
+        type: string
+      role:
+        type: integer
+        format: int64
+      token:
+        type: string
   models.Object:
     title: Object
     type: object

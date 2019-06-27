@@ -44,6 +44,20 @@ type APIData struct {
 	Body User `json:"body"`
 }
 
+//APIResponseData stores response data
+type APIResponseData struct {
+	Code  int          `json:"code"`
+	Body  ResponseBody `json:"body"`
+	Token string       `json:"token"`
+}
+
+//Invite stores json for invitation
+type Invite struct {
+	Role  int    `json:"role"`
+	Email string `json:"email"`
+	Token string `json:"token"`
+}
+
 //BusinessIdea hold data for Adding an Idea
 type BusinessIdea struct {
 	gorm.Model
@@ -193,6 +207,20 @@ func AssociateRoleUser(r interface{}, u User) interface{} {
 	return respond
 }
 
+//ValidUser stores User information with Token string in a single object.
+func ValidUser(u interface{}, token string) interface{} {
+	type validobject struct {
+		Body  interface{} `json:"body"`
+		Token string      `json:"token"`
+	}
+
+	var r validobject
+	r.Body = u
+	r.Token = token
+
+	return r
+}
+
 //GetUserRoles gets all roles of a user in an array
 func GetUserRoles(u User) interface{} {
 	type response struct {
@@ -328,4 +356,22 @@ var ValidateToken = func(tokenString string, username string) {
 	} else {
 		log.Println(err)
 	}
+}
+
+//ValidateRegistration validates the data sent on registration to see if it's valid
+func ValidateRegistration(u User) bool {
+	if u.FullName == "" {
+		return false
+	}
+	if u.Email == "" {
+		return false
+	}
+	if u.Username == "" {
+		return false
+	}
+	if u.Password == "" {
+		return false
+	}
+
+	return true
 }

@@ -16,9 +16,9 @@ type AdminController struct {
 // @Title CreateAdmin
 // @Description Create more super administrative users.
 // @Param	body		body 	models.User	true		"body for admin content"
-// @Success 200 {object} models.ResponsePackage
+// @Success 200 {object} models.APIResponseData
 // @Failure 403 body is empty
-// @router /sup/ [post]
+// @router /sup/register [post]
 func (u *AdminController) CreateSupAdmin() {
 	var admin models.User
 	err := json.Unmarshal(u.Ctx.Input.RequestBody, &admin)
@@ -30,7 +30,6 @@ func (u *AdminController) CreateSupAdmin() {
 
 		return
 	}
-
 	if admin.Role != 99 {
 		responseData := models.Response(403, "Forbidden")
 
@@ -39,9 +38,91 @@ func (u *AdminController) CreateSupAdmin() {
 
 		return
 	}
-	addAdminMessage := models.AddAdmin(admin)
-	responseData := models.ValidResponse(200, addAdminMessage)
+	isValid := models.ValidateRegistration(admin)
+	if isValid != true {
+		responseData := models.Response(400, "Kindly fill all required fields")
+
+		u.Data["json"] = responseData
+		u.ServeJSON()
+	}
+
+	responseData := models.AddAdmin(admin)
 	u.Data["json"] = responseData
+	u.ServeJSON()
+}
+
+//AdminLogin function handles login for everyone.
+// @Title Login
+// @Description Logs user into the system
+// @Param	username		query 	string	true		"The username for login"
+// @Param	password		query 	string	true		"The password for login"
+// @Success 200 {object} models.APIResponseData
+// @Failure 403 user not exist
+// @router /login [get]
+func (u *AdminController) AdminLogin() {
+	username := u.GetString("username")
+	password := u.GetString("password")
+
+	code, user := models.Login(username, password)
+	if code != 200 {
+		if code == 404 {
+			responseData := models.Response(404, "User Not Found")
+
+			u.Data["json"] = responseData
+			u.ServeJSON()
+		}
+
+		if code == 401 {
+			responseData := models.Response(401, "Incorrect Details")
+
+			u.Data["json"] = responseData
+			u.ServeJSON()
+		}
+	}
+
+	isSupAdmin := models.CheckSuperAdmin(user)
+	if isSupAdmin != true {
+		responseData := models.Response(403, "Unauthorized, User not an Admin")
+
+		u.Data["json"] = responseData
+		u.ServeJSON()
+	}
+
+	isSubAdmin := models.CheckSubAdmin(user)
+	if isSubAdmin != true {
+		responseData := models.Response(403, "Unauthorized, User not an Admin")
+
+		u.Data["json"] = responseData
+		u.ServeJSON()
+	}
+	getDefaultRole := models.CreateDefaultRole(user)
+	getRoles := models.AssociateRoleUser(getDefaultRole, user)
+	tokenString := models.GetTokenString(username)
+	response := models.APIResponse(code, getRoles, tokenString)
+	u.Data["json"] = response
+
+	u.ServeJSON()
+}
+
+//InviteSubAdmin function invites sub admins to the system by sending an email link.
+// @Title Invite Sub Admin
+// @Description Invites other admin users to join the system
+// @Param	body		body 	models.Invite	true		"A json containing the role {int}, email {string}, tokenString"
+// @Success 200 {string} invitation sent!
+// @Failure 403 user not exist
+// @router /invite [post]
+func (u *UserController) InviteSubAdmin() {
+	var invite models.Invite
+	err := json.Unmarshal(u.Ctx.Input.RequestBody, &invite)
+	if err != nil {
+		responseData := models.Response(405, "Method Not Allowed")
+
+		u.Data["json"] = responseData
+		u.ServeJSON()
+
+		return
+	}
+	u.Data["json"] = invite
 	u.ServeJSON()
 }
 

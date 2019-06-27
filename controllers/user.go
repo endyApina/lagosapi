@@ -3,7 +3,6 @@ package controllers
 import (
 	"encoding/json"
 	"lagosapi/models"
-	"log"
 
 	"github.com/astaxie/beego"
 )
@@ -17,9 +16,9 @@ type UserController struct {
 // @Title CreateUser
 // @Description create users
 // @Param	body		body 	models.User	true		"body for user content"
-// @Success 200 {object} models.ResponsePackage
+// @Success 200 {object} models.APIResponseData
 // @Failure 403 body is empty
-// @router / [post]
+// @router /register [post]
 func (u *UserController) Post() {
 	var user models.User
 	err := json.Unmarshal(u.Ctx.Input.RequestBody, &user)
@@ -31,9 +30,15 @@ func (u *UserController) Post() {
 
 		return
 	}
+	isValid := models.ValidateRegistration(user)
+	if isValid != true {
+		responseData := models.Response(400, "Kindly fill all required fields")
+
+		u.Data["json"] = responseData
+		u.ServeJSON()
+	}
 	addUserMessage := models.AddUser(user)
-	responseData := models.ValidResponse(200, addUserMessage)
-	u.Data["json"] = responseData
+	u.Data["json"] = addUserMessage
 	u.ServeJSON()
 }
 
@@ -114,20 +119,33 @@ func (u *UserController) Delete() {
 // @Description Logs user into the system
 // @Param	username		query 	string	true		"The username for login"
 // @Param	password		query 	string	true		"The password for login"
-// @Success 200 {string} login success
+// @Success 200 {object} models.APIResponseData
 // @Failure 403 user not exist
-// @router /login [get]
+// @router /login [post]
 func (u *UserController) Login() {
 	username := u.GetString("username")
 	password := u.GetString("password")
 
 	code, user := models.Login(username, password)
 	if code != 200 {
-		log.Println("Error")
+		if code == 404 {
+			responseData := models.Response(404, "User Not Found")
+
+			u.Data["json"] = responseData
+			u.ServeJSON()
+		}
+
+		if code == 401 {
+			responseData := models.Response(401, "Incorrect Details")
+
+			u.Data["json"] = responseData
+			u.ServeJSON()
+		}
 	}
+	getDefaultRole := models.CreateDefaultRole(user)
+	getRoles := models.AssociateRoleUser(getDefaultRole, user)
 	tokenString := models.GetTokenString(username)
-	// responseData := models.ValidResponse(200, user)
-	response := models.APIResponse(code, user, tokenString)
+	response := models.APIResponse(code, getRoles, tokenString)
 	u.Data["json"] = response
 
 	u.ServeJSON()
@@ -149,7 +167,7 @@ func (u *UserController) Logout() {
 // @Param	body		body 	models.APIData	true		"body to add new Business Idea"
 // @Success 200 {object} models.ResponsePackage
 // @Failure 403 body is empty
-// @router /addidea/ [post]
+// @router /idea/add [post]
 func (u *UserController) AddIdea() {
 	var user models.User
 	err := json.Unmarshal(u.Ctx.Input.RequestBody, &user)

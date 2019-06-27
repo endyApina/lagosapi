@@ -49,8 +49,9 @@ func AddAdmin(a User) interface{} {
 		role := CreateDefaultRole(a)
 		Conn.Where("user_id = ?", a.ID).Delete(&r)
 		Conn.Create(&role)
-
-		responseData := AssociateRoleUser(role, a)
+		tokenString := GetTokenString(a.Username)
+		getRoles := AssociateRoleUser(role, a)
+		responseData := APIResponse(200, getRoles, tokenString)
 		return responseData
 	}
 
@@ -63,8 +64,9 @@ func AddAdmin(a User) interface{} {
 	Conn.Create(&a)
 	role := CreateDefaultRole(a)
 	Conn.Create(&role)
-
-	responseData := AssociateRoleUser(role, a)
+	tokenString := GetTokenString(a.Username)
+	getRoles := AssociateRoleUser(role, a)
+	responseData := APIResponse(200, getRoles, tokenString)
 	return responseData
 }
 
