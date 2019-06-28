@@ -3,11 +3,8 @@ package controllers
 import (
 	"encoding/json"
 	"lagosapi/models"
-	"log"
-	"strings"
 
 	"github.com/astaxie/beego"
-	"github.com/dgrijalva/jwt-go"
 )
 
 //UserController handles all operations about Users
@@ -154,62 +151,20 @@ func (u *UserController) Login() {
 			u.ServeJSON()
 		}
 	}
-
 	isAdmin := models.CheckAdmin(user)
 	if isAdmin == true {
-		responseData := models.Response(403, "Unauthorized, User is an Admin")
+		responseData := models.Response(403, "Unauthorized Access Point")
 
 		u.Data["json"] = responseData
 		u.ServeJSON()
+
+		return
 	}
 
 	getDefaultRole := models.CreateDefaultRole(user)
 	getRoles := models.AssociateRoleUser(getDefaultRole, user)
 	tokenString := models.GetTokenString(username)
 	response := models.APIResponse(code, getRoles, tokenString)
-	u.Data["json"] = response
-	u.ServeJSON()
-}
-
-//ValidateToken validates user token
-// @Title logout
-// @Description decrypts token string to get user data
-// @Success 200 {string} logout success
-// @router /validate [get]
-func (u *UserController) ValidateToken() {
-	tokenS := u.Ctx.Input.Header("authorization")
-	wholeString := strings.Split(tokenS, ",")
-	if wholeString[0] != beego.AppConfig.String("tokenprefix") {
-		responseData := models.Response(403, "Invalid token")
-
-		u.Data["json"] = responseData
-		u.ServeJSON()
-	}
-	tokenString := wholeString[1]
-	claims := jwt.MapClaims{}
-	_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
-		return []byte(beego.AppConfig.String("jwtkey")), nil
-	})
-	if err != nil {
-		responseData := models.Response(403, "Invalid token")
-
-		u.Data["json"] = responseData
-		u.ServeJSON()
-	}
-	var username string
-	for key, val := range claims {
-		if key == "secret" {
-			username = val.(string)
-		}
-
-		if key == "expire" {
-			log.Println(val)
-		}
-	}
-	user := models.GetUsername(username)
-	getDefaultRole := models.CreateDefaultRole(user)
-	getRoles := models.AssociateRoleUser(getDefaultRole, user)
-	response := models.APIResponse(200, getRoles, tokenString)
 	u.Data["json"] = response
 	u.ServeJSON()
 }

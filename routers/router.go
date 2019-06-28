@@ -25,9 +25,14 @@ func init() {
 				&controllers.AdminController{},
 			),
 		),
-		beego.NSNamespace("/extras",
+		beego.NSNamespace("/token",
 			beego.NSInclude(
-				&controllers.ExtraController{},
+				&controllers.TokenController{},
+			),
+		),
+		beego.NSNamespace("/owner",
+			beego.NSInclude(
+				&controllers.OwnerController{},
 			),
 		),
 	)

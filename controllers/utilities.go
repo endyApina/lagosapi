@@ -2,9 +2,11 @@ package controllers
 
 import (
 	"strings"
+	"time"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
+	"github.com/dgrijalva/jwt-go"
 )
 
 //ValidateToken validates token
@@ -37,6 +39,13 @@ var ValidateToken = func(ctx *context.Context) {
 
 		return
 	}
+	isTokenExpired := TokenExpire(token)
+	if isTokenExpired != true {
+		var res unAuthorized
+		res.Code = 401
+		res.Body = "Token Expired, Kindly Login again."
+		ctx.Output.JSON(res, false, false)
+	}
 	if strings.HasPrefix(ctx.Input.URL(), "/v1/user/validate") {
 		return
 	}
@@ -46,6 +55,33 @@ var ValidateToken = func(ctx *context.Context) {
 func ValidToken(wholeToken string) bool {
 	splitString := strings.Split(wholeToken, ",")
 	if splitString[0] != beego.AppConfig.String("tokenprefix") {
+		return false
+	}
+
+	return true
+}
+
+//TokenExpire checks if the user token is valid and hasn't expired
+func TokenExpire(tokenS string) bool {
+	wholeString := strings.Split(tokenS, ",")
+	tokenString := wholeString[1]
+	claims := jwt.MapClaims{}
+	_, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
+		return []byte(beego.AppConfig.String("jwtkey")), nil
+	})
+	if err != nil {
+		return false
+	}
+	var expireAt float64
+	nowTime := time.Now().Add(time.Minute * 1).Unix()
+	for key, val := range claims {
+		if key == "expire" {
+			expireAt = val.(float64)
+		}
+	}
+	tm := float64(nowTime)
+	diff := tm - expireAt
+	if diff >= 3600 {
 		return false
 	}
 
@@ -66,7 +102,27 @@ func Filter(ctx *context.Context) bool {
 		return true
 	}
 
-	if strings.HasPrefix(ctx.Input.URL(), "/v1/admin/sup/register") {
+	if strings.HasPrefix(ctx.Input.URL(), "/v1/admin/register") {
+		return true
+	}
+
+	if strings.HasPrefix(ctx.Input.URL(), "/v1/admin/register") {
+		return true
+	}
+
+	if strings.HasPrefix(ctx.Input.URL(), "/v1/owner/exists") {
+		return true
+	}
+
+	if strings.HasPrefix(ctx.Input.URL(), "/v1/owner/register") {
+		return true
+	}
+
+	if strings.HasPrefix(ctx.Input.URL(), "/v1/admin/super/exist") {
+		return true
+	}
+
+	if strings.HasPrefix(ctx.Input.URL(), "/v1/owner/exist") {
 		return true
 	}
 

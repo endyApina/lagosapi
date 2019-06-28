@@ -2,6 +2,9 @@ package models
 
 import (
 	"errors"
+	"strconv"
+
+	"github.com/astaxie/beego"
 
 	"github.com/jinzhu/gorm"
 )
@@ -33,8 +36,6 @@ type Admin struct {
 
 //AddAdmin function adds a new super admin to the system
 func AddAdmin(a User) interface{} {
-	// var r Roles
-
 	Conn.AutoMigrate(&User{})
 	Conn.AutoMigrate(&Roles{})
 
@@ -180,4 +181,28 @@ func UpdateAdmin(uid string, uu *Admin) (a *Admin, err error) {
 		return u, nil
 	}
 	return nil, errors.New("User Not Exist")
+}
+
+//SpecialInvite sends an invitation link to whoever email is passed
+func SpecialInvite(invite Invite) interface{} {
+	var u User
+	u.Email = invite.Email
+	u.Role = invite.Role
+	userType := GetUserType(invite.Role)
+	template := beego.AppConfig.String("templatepath") + "invite.html"
+
+	res, user := CheckUser(u)
+	if res != true {
+		mailLink := "special/register/" + u.Email + "/" + strconv.Itoa(invite.Role) + "/" + strconv.Itoa(invite.Code)
+		SendInviteMessage(user, mailLink, template, userType)
+
+		responseData := Response(200, "Mail Sent Successfully")
+		return responseData
+	}
+
+	mailLink := "special/login/" + u.Email + "/" + strconv.Itoa(invite.Role) + "/" + strconv.Itoa(invite.Code)
+	SendInviteMessage(user, mailLink, template, userType)
+
+	responseData := Response(200, "Invitation sent successfully")
+	return responseData
 }

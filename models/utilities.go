@@ -53,7 +53,7 @@ type APIResponseData struct {
 type Invite struct {
 	Role  int    `json:"role"`
 	Email string `json:"email"`
-	Token string `json:"token"`
+	Code  int    `json:"code"`
 }
 
 //BusinessIdea hold data for Adding an Idea
@@ -147,6 +147,20 @@ func Response(code int, message string) interface{} {
 	return responseData
 }
 
+//UserExist checks if user exist
+func UserExist(code int, validity bool) interface{} {
+	type Message struct {
+		Code int  `json:"code"`
+		User bool `json:"user"`
+	}
+
+	var res Message
+	res.Code = code
+	res.User = validity
+
+	return res
+}
+
 //ValidResponse sends valid response to the frontend
 func ValidResponse(code int, responseText interface{}) interface{} {
 	type responseObject struct {
@@ -188,6 +202,13 @@ func CreateDefaultRole(u User) Roles {
 	role.UserName = u.FullName
 	role.Code = u.Role
 
+	return role
+}
+
+//GetRoleFromID return user roles from ID
+func GetRoleFromID(uid uint) []Roles {
+	var role []Roles
+	Conn.Where("user_id = ?", uid).Find(&role)
 	return role
 }
 
@@ -288,16 +309,16 @@ func CheckSubAdmin(u User) bool {
 //CheckAdmin checks if a particular user is an admin
 func CheckAdmin(u User) bool {
 	isSuperAdmin := CheckSuperAdmin(u)
-	if isSuperAdmin == false {
-		return false
+	if isSuperAdmin == true {
+		return true
 	}
 
 	isSubAdmin := CheckSubAdmin(u)
-	if isSubAdmin == false {
-		return false
+	if isSubAdmin == true {
+		return true
 	}
 
-	return true
+	return false
 }
 
 //DoesSupAdminExist checks if a sup admin exist in the system or not

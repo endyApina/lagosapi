@@ -7,10 +7,10 @@ import (
 	"log"
 	"time"
 
+	"github.com/astaxie/beego"
+
 	gomail "gopkg.in/gomail.v2"
 )
-
-// var auth = smtp.PlainAuth("", "info@my-gpi.com", "oW[Rmakd1rTB", "mail.my-gpi.com")
 
 // Data for composing mail data that will be made available in the mail template
 type Data struct {
@@ -18,6 +18,13 @@ type Data struct {
 	User      string
 	Password  string
 	CreatedAt time.Time
+}
+
+//Invite holds data for invitation
+type Invitation struct {
+	User string
+	Type string
+	Link string
 }
 
 //Invest for getting investor details
@@ -45,7 +52,7 @@ func NewRequest(to string, subject string /*attachment []string*/) *Request {
 // sendEmail for setting up email parameters
 func (r *Request) sendEmail() bool {
 	m := gomail.NewMessage()
-	m.SetAddressHeader("From", "endy.apina@my-gpi.io", "Global Performance Index")
+	m.SetAddressHeader("From", beego.AppConfig.String("maileremail"), beego.AppConfig.String("mailerheader"))
 	m.SetHeader("To", r.to)
 	m.SetHeader("Subject", r.subject)
 	m.SetBody("text/html", r.body)
@@ -53,7 +60,7 @@ func (r *Request) sendEmail() bool {
 	// 	m.Attach(v)
 	// }
 
-	d := gomail.NewDialer("mail.my-gpi.io", 587, "endy.apina@my-gpi.io", "newAB0000")
+	d := gomail.NewDialer(beego.AppConfig.String("mailersmtp"), 587, beego.AppConfig.String("maileremail"), beego.AppConfig.String("mailerpassword"))
 	if err := d.DialAndSend(m); err != nil {
 		fmt.Println(err)
 		return false
@@ -63,6 +70,20 @@ func (r *Request) sendEmail() bool {
 
 // Send for sending out email
 func (r *Request) Send(tempName string, item Data) {
+	err := r.ParseTemplate(tempName, item)
+	if err != nil {
+		log.Fatal(err)
+	}
+	if ok := r.sendEmail(); ok {
+
+	} else {
+		log.Printf("Failed to send the email to %s\n", r.to)
+		panic(err)
+	}
+}
+
+// Invite for sending out email
+func (r *Request) Invite(tempName string, item Invitation) {
 	err := r.ParseTemplate(tempName, item)
 	if err != nil {
 		log.Fatal(err)

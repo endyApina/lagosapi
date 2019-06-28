@@ -67,6 +67,26 @@ paths:
             $ref: '#/definitions/models.APIResponseData'
         "403":
           description: user not exist
+  /admin/register:
+    post:
+      tags:
+      - admin
+      description: Create more super administrative users.
+      operationId: AdminController.CreateAdmin
+      parameters:
+      - in: body
+        name: body
+        description: body for admin content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.APIResponseData'
+        "403":
+          description: body is empty
   /admin/sub/:
     get:
       tags:
@@ -110,12 +130,51 @@ paths:
           description: ""
           schema:
             $ref: '#/definitions/models.User'
-  /admin/sup/register:
-    post:
+  /admin/super/exist:
+    get:
       tags:
       - admin
-      description: Create more super administrative users.
-      operationId: AdminController.CreateAdmin
+      description: checks if super admin exists on the system
+      operationId: AdminController.SuperAdmin
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.APIResponseData'
+        "403":
+          description: body is empty
+  /owner/exist:
+    get:
+      tags:
+      - owner
+      description: checks if app owner exists on the system
+      operationId: OwnerController.AppOwner
+      parameters:
+      - in: body
+        name: body
+        description: body for user content
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      responses:
+        "200":
+          description: ""
+          schema:
+            $ref: '#/definitions/models.Response'
+        "403":
+          description: body is empty
+  /owner/register:
+    post:
+      tags:
+      - owner
+      description: Create single app owner account.
+      operationId: OwnerController.Create App Owner
       parameters:
       - in: body
         name: body
@@ -130,12 +189,12 @@ paths:
             $ref: '#/definitions/models.APIResponseData'
         "403":
           description: body is empty
-  /extras/token/validate:
+  /token/validate:
     get:
       tags:
-      - extras
+      - token
       description: validates token string in a request and returns the user information.
-      operationId: ExtraController.Validate Token
+      operationId: TokenController.Validate Token
       responses:
         "200":
           description: '{string} TokenString'
@@ -211,15 +270,6 @@ paths:
             $ref: '#/definitions/models.APIResponseData'
         "403":
           description: body is empty
-  /user/validate:
-    get:
-      tags:
-      - user
-      description: decrypts token string to get user data
-      operationId: UserController.logout
-      responses:
-        "200":
-          description: '{string} logout success'
 definitions:
   gorm.Model:
     title: Model
@@ -247,13 +297,17 @@ definitions:
     title: Invite
     type: object
     properties:
+      code:
+        type: integer
+        format: int64
       email:
         type: string
       role:
         type: integer
         format: int64
-      token:
-        type: string
+  models.Response:
+    title: Response
+    type: object
   models.ResponseBody:
     title: ResponseBody
     type: object
@@ -329,6 +383,9 @@ tags:
 - name: admin
   description: |
     AdminController handles admin controller
-- name: extras
+- name: token
   description: |
-    ExtraController handles every other system related sub-service
+    TokenController handles every other system related sub-service
+- name: owner
+  description: |
+    OwnerController handles all operations about App Owner

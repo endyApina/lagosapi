@@ -18,7 +18,7 @@ type AdminController struct {
 // @Param	body		body 	models.User	true		"body for admin content"
 // @Success 200 {object} models.APIResponseData
 // @Failure 403 body is empty
-// @router /sup/register [post]
+// @router /register [post]
 func (u *AdminController) CreateSupAdmin() {
 	var admin models.User
 	err := json.Unmarshal(u.Ctx.Input.RequestBody, &admin)
@@ -60,8 +60,18 @@ func (u *AdminController) CreateSupAdmin() {
 // @Failure 403 user not exist
 // @router /login [POST]
 func (u *AdminController) AdminLogin() {
-	username := u.GetString("username")
-	password := u.GetString("password")
+	var loginDetails models.User
+	err := json.Unmarshal(u.Ctx.Input.RequestBody, &loginDetails)
+	if err != nil {
+		responseData := models.Response(405, "Method Not Allowed")
+
+		u.Data["json"] = responseData
+		u.ServeJSON()
+
+		return
+	}
+	username := loginDetails.Username
+	password := loginDetails.Password
 
 	code, user := models.Login(username, password)
 	if code != 200 {
@@ -82,13 +92,13 @@ func (u *AdminController) AdminLogin() {
 
 	isAdmin := models.CheckAdmin(user)
 	if isAdmin != true {
-		responseData := models.Response(403, "Unauthorized, User not an admin")
+		responseData := models.Response(403, "Unauthorized Access Point")
 
 		u.Data["json"] = responseData
 		u.ServeJSON()
 	}
 
-	getDefaultRole := models.CreateDefaultRole(user)
+	getDefaultRole := models.GetRoleFromID(user.ID)
 	getRoles := models.AssociateRoleUser(getDefaultRole, user)
 	tokenString := models.GetTokenString(username)
 	response := models.APIResponse(code, getRoles, tokenString)
@@ -115,7 +125,9 @@ func (u *AdminController) InviteSubAdmin() {
 
 		return
 	}
-	u.Data["json"] = invite
+
+	sendInvitation := models.SpecialInvite(invite)
+	u.Data["json"] = sendInvitation
 	u.ServeJSON()
 }
 
@@ -182,28 +194,27 @@ func (u *AdminController) GetAllSubAdmins() {
 	u.ServeJSON()
 }
 
-// //UpdateSubAdmin updates sub admin
-// // @Title UpdateSubAdmin
-// // @Description update the Sub Admin
-// // @Param	uid		path 	string	true		"The uid you want to update"
-// // @Param	body		body 	models.ResponsePackage	true		"body for user content"
-// // @Success 200 {object} models.User
-// // @Failure 403 :uid is not int
-// // @router /sub/:uid [put]
-// func (u *AdminController) UpdateSubAdmin() {
-// 	uid := u.GetString(":uid")
-// 	if uid != "" {
-// 		var user models.User
-// 		json.Unmarshal(u.Ctx.Input.RequestBody, &user)
-// 		uu, err := models.UpdateUser(uid, &user)
-// 		if err != nil {
-// 			u.Data["json"] = err.Error()
-// 		} else {
-// 			u.Data["json"] = uu
-// 		}
-// 	}
-// 	u.ServeJSON()
-// }
+//SuperAdminExist checks if a super admin exist or not
+// @Title SuperAdmin
+// @Description checks if super admin exists on the system
+// @Param	body		body 	models.User	"body for user content"
+// @Success 200 {object} models.APIResponseData
+// @Failure 403 body is empty
+// @router /super/exist [get]
+func (u *AdminController) SuperAdminExist() {
+	iAppOwner := models.DoesSupAdminExist()
+	if iAppOwner != true {
+		responseData := models.UserExist(200, false)
+
+		u.Data["json"] = responseData
+		u.ServeJSON()
+	}
+
+	responseData := models.UserExist(200, true)
+
+	u.Data["json"] = responseData
+	u.ServeJSON()
+}
 
 // //DeleteSubAdmin deletes sub admin
 // // @Title DeleteSubAdmin
