@@ -16,7 +16,7 @@ paths:
     get:
       tags:
       - admin
-      description: get all Industry in the database
+      description: get all Users
       operationId: AdminController.GetAll
       responses:
         "200":
@@ -25,8 +25,26 @@ paths:
             type: array
             items:
               $ref: '#/definitions/models.ResponseObject'
+  /admin/invite:
+    post:
+      tags:
+      - admin
+      description: Invites other admin users to join the system
+      operationId: AdminController.Invite Sub Admin
+      parameters:
+      - in: body
+        name: body
+        description: A json containing the role {int}, email {string}, tokenString
+        required: true
+        schema:
+          $ref: '#/definitions/models.Invite'
+      responses:
+        "200":
+          description: '{string} invitation sent!'
+        "403":
+          description: user not exist
   /admin/login:
-    get:
+    post:
       tags:
       - admin
       description: Logs user into the system
@@ -112,95 +130,15 @@ paths:
             $ref: '#/definitions/models.APIResponseData'
         "403":
           description: body is empty
-  /object/:
+  /extras/token/validate:
     get:
       tags:
-      - object
-      description: get all objects
-      operationId: ObjectController.GetAll
+      - extras
+      description: validates token string in a request and returns the user information.
+      operationId: ExtraController.Validate Token
       responses:
         "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.Object'
-        "403":
-          description: :objectId is empty
-    post:
-      tags:
-      - object
-      description: create object
-      operationId: ObjectController.Create
-      parameters:
-      - in: body
-        name: body
-        description: The object content
-        required: true
-        schema:
-          $ref: '#/definitions/models.Object'
-      responses:
-        "200":
-          description: '{string} models.Object.Id'
-        "403":
-          description: body is empty
-  /object/{objectId}:
-    get:
-      tags:
-      - object
-      description: find object by objectid
-      operationId: ObjectController.Get
-      parameters:
-      - in: path
-        name: objectId
-        description: the objectid you want to get
-        required: true
-        type: string
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.Object'
-        "403":
-          description: :objectId is empty
-    put:
-      tags:
-      - object
-      description: update the object
-      operationId: ObjectController.Update
-      parameters:
-      - in: path
-        name: objectId
-        description: The objectid you want to update
-        required: true
-        type: string
-      - in: body
-        name: body
-        description: The body
-        required: true
-        schema:
-          $ref: '#/definitions/models.Object'
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.Object'
-        "403":
-          description: :objectId is empty
-    delete:
-      tags:
-      - object
-      description: delete the object
-      operationId: ObjectController.Delete
-      parameters:
-      - in: path
-        name: objectId
-        description: The objectId you want to delete
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{string} delete success!'
-        "403":
-          description: objectId is empty
+          description: '{string} TokenString'
   /user/:
     get:
       tags:
@@ -233,17 +171,13 @@ paths:
             $ref: '#/definitions/models.ResponsePackage'
         "403":
           description: :uid is empty
-    put:
+  /user/login:
+    post:
       tags:
       - user
-      description: update the user
-      operationId: UserController.Update
+      description: Logs user into the system
+      operationId: UserController.Login
       parameters:
-      - in: path
-        name: uid
-        description: The uid you want to update
-        required: true
-        type: string
       - in: body
         name: body
         description: body for user content
@@ -254,96 +188,9 @@ paths:
         "200":
           description: ""
           schema:
-            $ref: '#/definitions/models.ResponsePackage'
-        "403":
-          description: :uid is not int
-    delete:
-      tags:
-      - user
-      description: delete the user
-      operationId: UserController.Delete
-      parameters:
-      - in: path
-        name: uid
-        description: The uid you want to delete
-        required: true
-        type: string
-      responses:
-        "200":
-          description: '{string} delete success!'
-        "403":
-          description: uid is empty
-  /user/idea/add:
-    post:
-      tags:
-      - user
-      description: create new Ideas
-      operationId: UserController.AddIdea
-      parameters:
-      - in: body
-        name: body
-        description: body to add new Business Idea
-        required: true
-        schema:
-          $ref: '#/definitions/models.APIData'
-      responses:
-        "200":
-          description: ""
-          schema:
-            $ref: '#/definitions/models.ResponsePackage'
-        "403":
-          description: body is empty
-  /user/invite:
-    post:
-      tags:
-      - user
-      description: Invites other admin users to join the system
-      operationId: UserController.Invite Sub Admin
-      parameters:
-      - in: body
-        name: body
-        description: A json containing the role {int}, email {string}, tokenString
-        required: true
-        schema:
-          $ref: '#/definitions/models.Invite'
-      responses:
-        "200":
-          description: '{string} invitation sent!'
-        "403":
-          description: user not exist
-  /user/login:
-    post:
-      tags:
-      - user
-      description: Logs user into the system
-      operationId: UserController.Login
-      parameters:
-      - in: query
-        name: username
-        description: The username for login
-        required: true
-        type: string
-      - in: query
-        name: password
-        description: The password for login
-        required: true
-        type: string
-      responses:
-        "200":
-          description: ""
-          schema:
             $ref: '#/definitions/models.APIResponseData'
         "403":
           description: user not exist
-  /user/logout:
-    get:
-      tags:
-      - user
-      description: Logs out current logged in user session
-      operationId: UserController.logout
-      responses:
-        "200":
-          description: '{string} logout success'
   /user/register:
     post:
       tags:
@@ -364,6 +211,15 @@ paths:
             $ref: '#/definitions/models.APIResponseData'
         "403":
           description: body is empty
+  /user/validate:
+    get:
+      tags:
+      - user
+      description: decrypts token string to get user data
+      operationId: UserController.logout
+      responses:
+        "200":
+          description: '{string} logout success'
 definitions:
   gorm.Model:
     title: Model
@@ -398,17 +254,6 @@ definitions:
         format: int64
       token:
         type: string
-  models.Object:
-    title: Object
-    type: object
-    properties:
-      ObjectID:
-        type: string
-      PlayerName:
-        type: string
-      Score:
-        type: integer
-        format: int64
   models.ResponseBody:
     title: ResponseBody
     type: object
@@ -445,13 +290,13 @@ definitions:
       code:
         type: integer
         format: int64
+      full_name:
+        type: string
       role:
         type: string
       user_id:
         type: integer
         format: int32
-      user_name:
-        type: string
   models.User:
     title: User
     type: object
@@ -478,15 +323,12 @@ definitions:
       username:
         type: string
 tags:
-- name: object
-  description: |
-    Operations about object
 - name: user
   description: |
     UserController handles all operations about Users
 - name: admin
   description: |
     AdminController handles admin controller
-- name: industry
+- name: extras
   description: |
-    IndustryController handles admin controller
+    ExtraController handles every other system related sub-service

@@ -31,7 +31,7 @@ func (u *AdminController) CreateSupAdmin() {
 		return
 	}
 	if admin.Role != 99 {
-		responseData := models.Response(403, "Forbidden")
+		responseData := models.Response(403, "Forbidden, User not an Admin")
 
 		u.Data["json"] = responseData
 		u.ServeJSON()
@@ -58,7 +58,7 @@ func (u *AdminController) CreateSupAdmin() {
 // @Param	password		query 	string	true		"The password for login"
 // @Success 200 {object} models.APIResponseData
 // @Failure 403 user not exist
-// @router /login [get]
+// @router /login [POST]
 func (u *AdminController) AdminLogin() {
 	username := u.GetString("username")
 	password := u.GetString("password")
@@ -80,21 +80,14 @@ func (u *AdminController) AdminLogin() {
 		}
 	}
 
-	isSupAdmin := models.CheckSuperAdmin(user)
-	if isSupAdmin != true {
-		responseData := models.Response(403, "Unauthorized, User not an Admin")
+	isAdmin := models.CheckAdmin(user)
+	if isAdmin != true {
+		responseData := models.Response(403, "Unauthorized, User not an admin")
 
 		u.Data["json"] = responseData
 		u.ServeJSON()
 	}
 
-	isSubAdmin := models.CheckSubAdmin(user)
-	if isSubAdmin != true {
-		responseData := models.Response(403, "Unauthorized, User not an Admin")
-
-		u.Data["json"] = responseData
-		u.ServeJSON()
-	}
 	getDefaultRole := models.CreateDefaultRole(user)
 	getRoles := models.AssociateRoleUser(getDefaultRole, user)
 	tokenString := models.GetTokenString(username)
@@ -111,7 +104,7 @@ func (u *AdminController) AdminLogin() {
 // @Success 200 {string} invitation sent!
 // @Failure 403 user not exist
 // @router /invite [post]
-func (u *UserController) InviteSubAdmin() {
+func (u *AdminController) InviteSubAdmin() {
 	var invite models.Invite
 	err := json.Unmarshal(u.Ctx.Input.RequestBody, &invite)
 	if err != nil {

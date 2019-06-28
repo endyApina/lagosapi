@@ -33,7 +33,7 @@ type Admin struct {
 
 //AddAdmin function adds a new super admin to the system
 func AddAdmin(a User) interface{} {
-	var r Roles
+	// var r Roles
 
 	Conn.AutoMigrate(&User{})
 	Conn.AutoMigrate(&Roles{})
@@ -44,10 +44,11 @@ func AddAdmin(a User) interface{} {
 		return responseData
 	}
 
-	userExist := CheckUserExists(a)
-	if userExist == true {
+	res, user := CheckUser(a)
+	if res == true {
+		Conn.Where("user_id = ?", user.ID).Delete(&Roles{})
 		role := CreateDefaultRole(a)
-		Conn.Where("user_id = ?", a.ID).Delete(&r)
+		role.UserID = user.ID
 		Conn.Create(&role)
 		tokenString := GetTokenString(a.Username)
 		getRoles := AssociateRoleUser(role, a)

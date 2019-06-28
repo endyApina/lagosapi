@@ -17,6 +17,12 @@ func init() {
 	// UserList["user_11111"] = &u
 }
 
+//LoginDetails stores login details
+type LoginDetails struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 //User struct shows models for users
 type User struct {
 	gorm.Model
@@ -54,6 +60,7 @@ func AddUser(u User) interface{} {
 			Conn.AutoMigrate(&Roles{})
 			getDefaultRole := CreateDefaultRole(u)
 			Conn.Create(&getDefaultRole)
+			SendRegistrationEmail(u)
 			tokenString := GetTokenString(u.Username)
 			getRoles := AssociateRoleUser(getDefaultRole, u)
 
@@ -148,6 +155,13 @@ func Login(username, password string) (code int, user User) {
 	}
 
 	return 200, u
+}
+
+//GetUsername gets user from username
+func GetUsername(username string) User {
+	var u User
+	Conn.Where("username = ?", username).First(&u)
+	return u
 }
 
 //DeleteUser deletes user

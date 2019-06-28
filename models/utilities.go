@@ -2,8 +2,6 @@ package models
 
 import (
 	"encoding/csv"
-	"fmt"
-	"log"
 	"os"
 	"time"
 
@@ -130,7 +128,7 @@ func init() {
 type Roles struct {
 	gorm.Model
 	UserID   uint   `gorm:"type:int(10)" json:"user_id"`
-	UserName string `gorm:"type:varchar(100)" json:"user_name"`
+	UserName string `gorm:"type:varchar(100)" json:"full_name"`
 	Code     int    `gorm:"type:int(10)" json:"code"`
 	Role     string `gorm:"type:varchar(100)" json:"role"`
 }
@@ -196,8 +194,8 @@ func CreateDefaultRole(u User) Roles {
 //AssociateRoleUser merges users with thier roles
 func AssociateRoleUser(r interface{}, u User) interface{} {
 	type response struct {
-		Role interface{}
-		User interface{}
+		Role interface{} `json:"role"`
+		User interface{} `json:"user"`
 	}
 
 	var respond response
@@ -245,6 +243,16 @@ func CheckUserExists(u User) bool {
 	return true
 }
 
+//CheckUser checks if a user exists and returns the user
+func CheckUser(u User) (res bool, user User) {
+	findEmail := Conn.Where("email = ?", u.Email).Find(&u)
+	//If email doesn't exist, proceed to check if username exist
+	if findEmail != nil && findEmail.Error != nil {
+		return false, u
+	}
+	return true, u
+}
+
 //CheckUsername checks if username exists as username is Unique
 func CheckUsername(u User) bool {
 	findUsername := Conn.Where("username = ?", u.Username).Find(&u)
@@ -277,10 +285,25 @@ func CheckSubAdmin(u User) bool {
 	return true
 }
 
+//CheckAdmin checks if a particular user is an admin
+func CheckAdmin(u User) bool {
+	isSuperAdmin := CheckSuperAdmin(u)
+	if isSuperAdmin == false {
+		return false
+	}
+
+	isSubAdmin := CheckSubAdmin(u)
+	if isSubAdmin == false {
+		return false
+	}
+
+	return true
+}
+
 //DoesSupAdminExist checks if a sup admin exist in the system or not
 func DoesSupAdminExist() bool {
 	var r Roles
-	ifsupadminexists := Conn.Where("code == 99").Find(&r)
+	ifsupadminexists := Conn.Where("code = 99").Find(&r)
 	//If role does not exist
 	if ifsupadminexists != nil && ifsupadminexists.Error != nil {
 		return false
@@ -330,7 +353,7 @@ func AddUserToken(u User, token string) interface{} {
 func GetTokenString(username string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"secret": username,
-		"time":   time.Date(2015, 10, 10, 12, 0, 0, 0, time.UTC).Unix(),
+		"expire": time.Now().Add(time.Minute * 1).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte(beego.AppConfig.String("jwtkey")))
@@ -339,23 +362,6 @@ func GetTokenString(username string) string {
 	}
 
 	return tokenString
-}
-
-//ValidateToken validate tokenString
-var ValidateToken = func(tokenString string, username string) {
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
-		}
-
-		return []byte(beego.AppConfig.String("jwtkey")), nil
-	})
-
-	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		log.Println(claims["secret"], claims["time"])
-	} else {
-		log.Println(err)
-	}
 }
 
 //ValidateRegistration validates the data sent on registration to see if it's valid
