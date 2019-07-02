@@ -13,7 +13,7 @@ func AddAppOwner(a User) interface{} {
 
 	res, user := CheckUser(a)
 	if res == true {
-		Conn.Where("user_id = ?", user.ID).Delete(&Roles{})
+		// Conn.Where("user_id = ?", user.ID).Delete(&Roles{})
 		role := CreateDefaultRole(a)
 		role.UserID = user.ID
 		Conn.Create(&role)
@@ -47,5 +47,16 @@ func DoesAppOwnerExist() bool {
 		return false
 	}
 
+	return true
+}
+
+//CheckAppOwner checks if a particular user is an admin
+func CheckAppOwner(u User) bool {
+	var r Roles
+	ifAppOwner := Conn.Where("user_id = ? AND code = 999", u.ID).Find(&r)
+	//if user not a sub Admin?
+	if ifAppOwner != nil && ifAppOwner.Error != nil {
+		return false
+	}
 	return true
 }

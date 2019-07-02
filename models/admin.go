@@ -3,6 +3,7 @@ package models
 import (
 	"errors"
 	"strconv"
+	"strings"
 
 	"github.com/astaxie/beego"
 
@@ -47,7 +48,7 @@ func AddAdmin(a User) interface{} {
 
 	res, user := CheckUser(a)
 	if res == true {
-		Conn.Where("user_id = ?", user.ID).Delete(&Roles{})
+		// Conn.Where("user_id = ?", user.ID).Delete(&Roles{})
 		role := CreateDefaultRole(a)
 		role.UserID = user.ID
 		Conn.Create(&role)
@@ -66,7 +67,7 @@ func AddAdmin(a User) interface{} {
 	Conn.Create(&a)
 	role := CreateDefaultRole(a)
 	Conn.Create(&role)
-	tokenString := GetTokenString(a.Username)
+	tokenString := GetToken(a)
 	getRoles := AssociateRoleUser(role, a)
 	responseData := APIResponse(200, getRoles, tokenString)
 	return responseData
@@ -193,14 +194,16 @@ func SpecialInvite(invite Invite) interface{} {
 
 	res, user := CheckUser(u)
 	if res != true {
-		mailLink := "special/register/" + u.Email + "/" + strconv.Itoa(invite.Role) + "/" + strconv.Itoa(invite.Code)
+		mailLink := beego.AppConfig.String("currentip") + "special/register/" + u.Email + "/" + strconv.Itoa(invite.Role)
+		user.FullName = strings.Split(user.Email, "@")[0]
 		SendInviteMessage(user, mailLink, template, userType)
 
 		responseData := Response(200, "Mail Sent Successfully")
 		return responseData
 	}
 
-	mailLink := "special/login/" + u.Email + "/" + strconv.Itoa(invite.Role) + "/" + strconv.Itoa(invite.Code)
+	mailLink := beego.AppConfig.String("currentip") + "special/login/" + u.Email + "/" + strconv.Itoa(invite.Role)
+	user.FullName = strings.Split(user.Email, "@")[0]
 	SendInviteMessage(user, mailLink, template, userType)
 
 	responseData := Response(200, "Invitation sent successfully")

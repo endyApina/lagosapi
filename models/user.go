@@ -150,7 +150,7 @@ func Login(username, password string) (code int, user User) {
 		return 200, u
 
 	}
-	if u.Password != password {
+	if password != u.Password {
 		return 401, u
 	}
 
@@ -161,6 +161,13 @@ func Login(username, password string) (code int, user User) {
 func GetUsername(username string) User {
 	var u User
 	Conn.Where("username = ?", username).First(&u)
+	return u
+}
+
+//GetUserEmail get user from email
+func GetUserEmail(email string) User {
+	var u User
+	Conn.Where("email = ?", email).First(&u)
 	return u
 }
 

@@ -72,7 +72,7 @@ func GetUserType(code int) string {
 		return "Super Admin"
 	}
 	if code == 88 {
-		return "Subordinate Admin"
+		return "Administrative"
 	}
 	if code == 77 {
 		return "Judge"

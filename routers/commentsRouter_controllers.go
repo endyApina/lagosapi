@@ -90,6 +90,15 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:OwnerController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:OwnerController"],
         beego.ControllerComments{
+            Method: "OwnerLogin",
+            Router: `/login`,
+            AllowHTTPMethods: []string{"POST"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:OwnerController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:OwnerController"],
+        beego.ControllerComments{
             Method: "CreateAppOwner",
             Router: `/register`,
             AllowHTTPMethods: []string{"post"},

@@ -53,7 +53,6 @@ type APIResponseData struct {
 type Invite struct {
 	Role  int    `json:"role"`
 	Email string `json:"email"`
-	Code  int    `json:"code"`
 }
 
 //BusinessIdea hold data for Adding an Idea
@@ -373,8 +372,25 @@ func AddUserToken(u User, token string) interface{} {
 //GetTokenString generates and returns a string.
 func GetTokenString(username string) string {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
-		"secret": username,
-		"expire": time.Now().Add(time.Minute * 1).Unix(),
+		"username": username,
+		"expire":   time.Now().Add(time.Minute * 1).Unix(),
+	})
+
+	tokenString, err := token.SignedString([]byte(beego.AppConfig.String("jwtkey")))
+	if err != nil {
+		panic(err)
+	}
+
+	return tokenString
+}
+
+//GetToken generates and returns a string.
+func GetToken(u User) string {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"username": u.Username,
+		"id":       u.ID,
+		"email":    u.Email,
+		"expire":   time.Now().Add(time.Minute * 1).Unix(),
 	})
 
 	tokenString, err := token.SignedString([]byte(beego.AppConfig.String("jwtkey")))

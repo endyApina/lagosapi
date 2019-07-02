@@ -31,10 +31,19 @@ var ValidateToken = func(ctx *context.Context) {
 
 		return
 	}
+	isNull := NullToken(token)
+	if isNull == true {
+		var res unAuthorized
+		res.Code = 403
+		res.Body = "Unauthorized Connection. Empty Token String"
+		ctx.Output.JSON(res, false, false)
+
+		return
+	}
 	if token == "" {
 		var res unAuthorized
 		res.Code = 403
-		res.Body = "Unauthorized Connection. Invalid Token"
+		res.Body = "Unauthorized Connection. Empty Token"
 		ctx.Output.JSON(res, false, false)
 
 		return
@@ -61,6 +70,16 @@ func ValidToken(wholeToken string) bool {
 	return true
 }
 
+//NullToken checks if token is null
+func NullToken(wholeToken string) bool {
+	splitString := strings.Split(wholeToken, ",")
+	if splitString[1] == "" {
+		return true
+	}
+
+	return false
+}
+
 //TokenExpire checks if the user token is valid and hasn't expired
 func TokenExpire(tokenS string) bool {
 	wholeString := strings.Split(tokenS, ",")
@@ -81,7 +100,7 @@ func TokenExpire(tokenS string) bool {
 	}
 	tm := float64(nowTime)
 	diff := tm - expireAt
-	if diff >= 3600 {
+	if diff >= 360000 {
 		return false
 	}
 
@@ -111,6 +130,10 @@ func Filter(ctx *context.Context) bool {
 	}
 
 	if strings.HasPrefix(ctx.Input.URL(), "/v1/owner/exists") {
+		return true
+	}
+
+	if strings.HasPrefix(ctx.Input.URL(), "/v1/owner/login") {
 		return true
 	}
 

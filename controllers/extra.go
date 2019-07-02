@@ -39,12 +39,26 @@ func (u *TokenController) ValidateToken() {
 		u.ServeJSON()
 	}
 	var username string
+	var email string
 	for key, val := range claims {
-		if key == "secret" {
+		if key == "username" {
 			username = val.(string)
 		}
+
+		if key == "email" {
+			email = val.(string)
+		}
 	}
-	user := models.GetUsername(username)
+
+	var user models.User
+	if username != "" {
+		user = models.GetUsername(username)
+	}
+
+	if email != "" {
+		user = models.GetUserEmail(email)
+	}
+
 	getDefaultRole := models.CreateDefaultRole(user)
 	getRoles := models.AssociateRoleUser(getDefaultRole, user)
 	response := models.APIResponse(200, getRoles, tokenString)

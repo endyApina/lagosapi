@@ -163,7 +163,7 @@ func (u *UserController) Login() {
 
 	getDefaultRole := models.CreateDefaultRole(user)
 	getRoles := models.AssociateRoleUser(getDefaultRole, user)
-	tokenString := models.GetTokenString(username)
+	tokenString := models.GetToken(user)
 	response := models.APIResponse(code, getRoles, tokenString)
 	u.Data["json"] = response
 	u.ServeJSON()

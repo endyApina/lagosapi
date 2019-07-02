@@ -257,6 +257,42 @@
                 }
             }
         },
+        "/owner/login": {
+            "post": {
+                "tags": [
+                    "owner"
+                ],
+                "description": "Logs user into the system",
+                "operationId": "OwnerController.Login",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "username",
+                        "description": "The username for login",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "password",
+                        "description": "The password for login",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "",
+                        "schema": {
+                            "$ref": "#/definitions/models.APIResponseData"
+                        }
+                    },
+                    "403": {
+                        "description": "user not exist"
+                    }
+                }
+            }
+        },
         "/owner/register": {
             "post": {
                 "tags": [
@@ -451,10 +487,6 @@
             "title": "Invite",
             "type": "object",
             "properties": {
-                "code": {
-                    "type": "integer",
-                    "format": "int64"
-                },
                 "email": {
                     "type": "string"
                 },
