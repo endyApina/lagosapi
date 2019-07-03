@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"encoding/json"
 	"lagosapi/models"
 	"strings"
 
@@ -8,8 +9,13 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-//TokenController handles every other system related sub-service
+//TokenController handles every endpoint relating to token
 type TokenController struct {
+	beego.Controller
+}
+
+//InvitationController handles every the endpoint relating to inviting users
+type InvitationController struct {
 	beego.Controller
 }
 
@@ -62,6 +68,50 @@ func (u *TokenController) ValidateToken() {
 	getDefaultRole := models.CreateDefaultRole(user)
 	getRoles := models.AssociateRoleUser(getDefaultRole, user)
 	response := models.APIResponse(200, getRoles, tokenString)
+	u.Data["json"] = response
+	u.ServeJSON()
+}
+
+//VerifyInvite verifies a user invitation
+// @Title Verify Invitation Link
+// @Description validates a user invitation link to see if it was actually created by user.
+// @Param	body		body 	models.Invitation	true		"A json containing the role {int}, email {string} and code {string}"
+// @Success 200 {string} "Invitation Url"
+// @router /validate [POST]
+func (u *InvitationController) VerifyInvite() {
+	var invite models.Invitation
+	err := json.Unmarshal(u.Ctx.Input.RequestBody, &invite)
+	if err != nil {
+		responseData := models.Response(405, "Method Not Allowed")
+
+		u.Data["json"] = responseData
+		u.ServeJSON()
+
+		return
+	}
+
+	code := models.VerifyInvite(invite)
+	if code != 200 {
+		if code == 404 {
+			responseData := models.Response(404, "User does not exist.")
+
+			u.Data["json"] = responseData
+			u.ServeJSON()
+		}
+
+		if code == 403 {
+			responseData := models.Response(403, "Forbidden, Invalid Invitation Link.")
+
+			u.Data["json"] = responseData
+			u.ServeJSON()
+		}
+	}
+
+	user := models.GetUserEmail(invite.Email)
+	getDefaultRole := models.CreateDefaultRole(user)
+	getRoles := models.AssociateRoleUser(getDefaultRole, user)
+	tokenString := models.GetToken(user)
+	response := models.APIResponse(code, getRoles, tokenString)
 	u.Data["json"] = response
 	u.ServeJSON()
 }

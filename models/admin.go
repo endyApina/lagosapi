@@ -2,8 +2,10 @@ package models
 
 import (
 	"errors"
+	"math/rand"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/astaxie/beego"
 
@@ -52,6 +54,7 @@ func AddAdmin(a User) interface{} {
 		role := CreateDefaultRole(a)
 		role.UserID = user.ID
 		Conn.Create(&role)
+		SendRegistrationEmail(a)
 		tokenString := GetTokenString(a.Username)
 		getRoles := AssociateRoleUser(role, a)
 		responseData := APIResponse(200, getRoles, tokenString)
@@ -69,6 +72,7 @@ func AddAdmin(a User) interface{} {
 	Conn.Create(&a)
 	role := CreateDefaultRole(a)
 	Conn.Create(&role)
+	SendRegistrationEmail(a)
 	tokenString := GetToken(a)
 	getRoles := AssociateRoleUser(role, a)
 	responseData := APIResponse(200, getRoles, tokenString)
@@ -186,8 +190,16 @@ func UpdateAdmin(uid string, uu *Admin) (a *Admin, err error) {
 	return nil, errors.New("User Not Exist")
 }
 
+//Invitation stores invitation user object
+type Invitation struct {
+	gorm.Model
+	Email            string `gorm:"type:varchar(100)" json:"email"`
+	Role             int    `gorm:"type:int(100)" json:"role"`
+	VerificationCode string `gorm:"type:varchar(100)" json:"code"`
+}
+
 //SpecialInvite sends an invitation link to whoever email is passed
-func SpecialInvite(invite Invite) interface{} {
+func SpecialInvite(invite Invitation) interface{} {
 	var u User
 	u.Email = invite.Email
 	u.Role = invite.Role
@@ -195,8 +207,9 @@ func SpecialInvite(invite Invite) interface{} {
 	template := beego.AppConfig.String("templatepath") + "invite.html"
 
 	res, user := CheckUser(u)
+	verifi := StoreInvite(user, invite.Role)
 	if res != true {
-		mailLink := beego.AppConfig.String("currentip") + "special/register/" + u.Email + "/" + strconv.Itoa(invite.Role)
+		mailLink := beego.AppConfig.String("currentip") + "special/register/" + u.Email + "/" + strconv.Itoa(invite.Role) + "/" + verifi
 		user.FullName = strings.Split(user.Email, "@")[0]
 		SendInviteMessage(user, mailLink, template, userType)
 
@@ -204,10 +217,59 @@ func SpecialInvite(invite Invite) interface{} {
 		return responseData
 	}
 
-	mailLink := beego.AppConfig.String("currentip") + "special/login/" + u.Email + "/" + strconv.Itoa(invite.Role)
+	mailLink := beego.AppConfig.String("currentip") + "special/login/" + u.Email + "/" + strconv.Itoa(invite.Role) + "/" + verifi
 	user.FullName = strings.Split(user.Email, "@")[0]
 	SendInviteMessage(user, mailLink, template, userType)
 
 	responseData := Response(200, "Invitation sent successfully")
 	return responseData
+}
+
+//StoreInvite function stores invitation details in the db
+func StoreInvite(u User, role int) string {
+	Conn.AutoMigrate(&Invitation{})
+	var invitation Invitation
+	invitation.Email = u.Email
+	invitation.Role = role
+	invitation.VerificationCode = GenerateRandCode(16)
+
+	invitationExist := CheckInvite(invitation)
+	if invitationExist == false {
+		Conn.Create(&invitation)
+
+		return invitation.VerificationCode
+	}
+	Conn.Model(&invitation).Update("verification_code", invitation.VerificationCode)
+	return invitation.VerificationCode
+}
+
+const charset = "abcdefghijklmnopqrstuvwxyz" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" + "!£$%^&*()[]<>"
+
+var seededRand *rand.Rand = rand.New(
+	rand.NewSource(time.Now().UnixNano()))
+
+//StringWithCharset chill
+func StringWithCharset(length int, charset string) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(b)
+}
+
+//GenerateRandCode gets new random codes
+func GenerateRandCode(length int) string {
+	return StringWithCharset(length, charset)
+}
+
+//CheckInvite checks if theres an invite for a particular for that same role.
+func CheckInvite(invite Invitation) bool {
+	var i Invitation
+	invitation := Conn.Where("email = ? AND role = ?", invite.Email, invite.Role).Find(&i)
+	//If invitation does not exist
+	if invitation != nil && invitation.Error != nil {
+		return false
+	}
+
+	return true
 }

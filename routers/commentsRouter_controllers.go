@@ -18,7 +18,7 @@ func init() {
 
     beego.GlobalControllerRouter["lagosapi/controllers:AdminController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:AdminController"],
         beego.ControllerComments{
-            Method: "InviteSubAdmin",
+            Method: "InviteSpecialUsers",
             Router: `/invite`,
             AllowHTTPMethods: []string{"post"},
             MethodParams: param.Make(),
@@ -75,6 +75,15 @@ func init() {
             Method: "SuperAdminExist",
             Router: `/super/exist`,
             AllowHTTPMethods: []string{"get"},
+            MethodParams: param.Make(),
+            Filters: nil,
+            Params: nil})
+
+    beego.GlobalControllerRouter["lagosapi/controllers:InvitationController"] = append(beego.GlobalControllerRouter["lagosapi/controllers:InvitationController"],
+        beego.ControllerComments{
+            Method: "VerifyInvite",
+            Router: `/validate`,
+            AllowHTTPMethods: []string{"POST"},
             MethodParams: param.Make(),
             Filters: nil,
             Params: nil})

@@ -68,25 +68,25 @@ func SendInviteMessage(u User, link string, template string, userType string) {
 //GetUserType gets type of a user
 func GetUserType(code int) string {
 	if code == 999 {
-		return "Application Owner"
+		return "the Application Owner"
 	}
 	if code == 99 {
-		return "Super Admin"
+		return "a Super Admin"
 	}
 	if code == 88 {
-		return "Administrative"
+		return "an Administrative"
 	}
 	if code == 77 {
-		return "Judge"
+		return "a Judge"
 	}
 	if code == 66 {
-		return "Mentor"
+		return "a Mentor"
 	}
 	if code == 55 {
-		return "Investor"
+		return "an Investor"
 	}
 	if code == 0 {
-		return "Regular User"
+		return "a Regular User"
 	}
 
 	return "Invalid User Code"
@@ -102,4 +102,22 @@ func HashPassword(password string) (string, error) {
 func CheckPasswordHash(password, hash string) bool {
 	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
 	return err == nil
+}
+
+//VerifyInvite verifies an invitation link with it's code.
+func VerifyInvite(invite Invitation) int {
+	var i Invitation
+	invitation := Conn.Where("email = ? AND verification_code = ?", invite.Email, invite.VerificationCode).Find(&i)
+	//If invitation does not exist
+	if invitation != nil && invitation.Error != nil {
+		return 403
+	}
+
+	var u User
+	findUser := Conn.Where("email = ?", i.Email).Find(&u)
+	//If user does not exist
+	if findUser != nil && findUser.Error != nil {
+		return 404
+	}
+	return 200
 }

@@ -11,12 +11,6 @@ var (
 	UserList map[string]*User
 )
 
-func init() {
-	UserList = make(map[string]*User)
-	// u := User{"Endy Apinageri", "astaxie", "pappi", "male", "03-05-1997", "Primewares", "Lekki", "Nigeria", "astaxie@gmail.com"}
-	// UserList["user_11111"] = &u
-}
-
 //LoginDetails stores login details
 type LoginDetails struct {
 	Username string `json:"username"`

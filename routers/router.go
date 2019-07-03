@@ -35,6 +35,11 @@ func init() {
 				&controllers.OwnerController{},
 			),
 		),
+		beego.NSNamespace("/invite",
+			beego.NSInclude(
+				&controllers.InvitationController{},
+			),
+		),
 	)
 	beego.AddNamespace(ns)
 }

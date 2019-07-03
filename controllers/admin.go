@@ -114,8 +114,8 @@ func (u *AdminController) AdminLogin() {
 // @Success 200 {string} invitation sent!
 // @Failure 403 user not exist
 // @router /invite [post]
-func (u *AdminController) InviteSubAdmin() {
-	var invite models.Invite
+func (u *AdminController) InviteSpecialUsers() {
+	var invite models.Invitation
 	err := json.Unmarshal(u.Ctx.Input.RequestBody, &invite)
 	if err != nil {
 		responseData := models.Response(405, "Method Not Allowed")

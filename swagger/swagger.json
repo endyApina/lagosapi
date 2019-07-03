@@ -226,6 +226,31 @@
                 }
             }
         },
+        "/invite/validate": {
+            "post": {
+                "tags": [
+                    "invite"
+                ],
+                "description": "validates a user invitation link to see if it was actually created by user.",
+                "operationId": "InvitationController.Verify Invitation Link",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "description": "A json containing the role {int}, email {string} and code {string}",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/models.Invitation"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "{string} \"Invitation Url\""
+                    }
+                }
+            }
+        },
         "/owner/exist": {
             "get": {
                 "tags": [
@@ -483,6 +508,22 @@
                 }
             }
         },
+        "models.Invitation": {
+            "title": "Invitation",
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
         "models.Invite": {
             "title": "Invite",
             "type": "object",
@@ -612,11 +653,15 @@
         },
         {
             "name": "token",
-            "description": "TokenController handles every other system related sub-service\n"
+            "description": "TokenController handles every endpoint relating to token\n"
         },
         {
             "name": "owner",
             "description": "OwnerController handles all operations about App Owner\n"
+        },
+        {
+            "name": "invite",
+            "description": "InvitationController handles every the endpoint relating to inviting users\n"
         }
     ]
 }

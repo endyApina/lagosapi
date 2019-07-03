@@ -125,10 +125,6 @@ func Filter(ctx *context.Context) bool {
 		return true
 	}
 
-	if strings.HasPrefix(ctx.Input.URL(), "/v1/admin/register") {
-		return true
-	}
-
 	if strings.HasPrefix(ctx.Input.URL(), "/v1/owner/exists") {
 		return true
 	}
@@ -145,7 +141,7 @@ func Filter(ctx *context.Context) bool {
 		return true
 	}
 
-	if strings.HasPrefix(ctx.Input.URL(), "/v1/owner/exist") {
+	if strings.HasPrefix(ctx.Input.URL(), "/v1/invite/validate") {
 		return true
 	}
 
