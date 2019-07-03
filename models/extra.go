@@ -4,6 +4,8 @@ import (
 	"lagosapi/controllers/mailer"
 	"log"
 
+	"golang.org/x/crypto/bcrypt"
+
 	"github.com/astaxie/beego"
 
 	"github.com/dgrijalva/jwt-go"
@@ -88,4 +90,16 @@ func GetUserType(code int) string {
 	}
 
 	return "Invalid User Code"
+}
+
+//HashPassword encrypts "Hash" a password
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 14)
+	return string(bytes), err
+}
+
+//CheckPasswordHash checks if password and hash is the same. Returns true or false.
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }

@@ -10,6 +10,7 @@ import (
 	//mysql driver
 
 	jwt "github.com/dgrijalva/jwt-go"
+	//Mysql driver
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )

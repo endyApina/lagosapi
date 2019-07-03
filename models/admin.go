@@ -64,6 +64,8 @@ func AddAdmin(a User) interface{} {
 		return responseData
 	}
 
+	hashPassword, _ := HashPassword(a.Password)
+	a.Password = hashPassword
 	Conn.Create(&a)
 	role := CreateDefaultRole(a)
 	Conn.Create(&role)

@@ -5,8 +5,8 @@ func AddAppOwner(a User) interface{} {
 	Conn.AutoMigrate(&User{})
 	Conn.AutoMigrate(&Roles{})
 
-	supadminexist := DoesAppOwnerExist()
-	if supadminexist == true {
+	appownerexist := DoesAppOwnerExist()
+	if appownerexist == true {
 		responseData := Response(401, "Unauthorized, App owner already exist")
 		return responseData
 	}
@@ -28,6 +28,9 @@ func AddAppOwner(a User) interface{} {
 		responseData := Response(403, "Username already Exists")
 		return responseData
 	}
+
+	hashPassword, _ := HashPassword(a.Password)
+	a.Password = hashPassword
 
 	Conn.Create(&a)
 	role := CreateDefaultRole(a)

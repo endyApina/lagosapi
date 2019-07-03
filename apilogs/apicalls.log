@@ -805,3 +805,32 @@
 2019/07/01 13:45:58.036 [D] [server.go:2774]  |   172.30.50.62|[42m 200 [0m|      999.8µs|   match|[46m POST    [0m /v1/user/login   r:/v1/user/login
 2019/07/01 13:46:07.977 [D] [server.go:2774]  |   172.30.50.62|[42m 200 [0m|      996.8µs| nomatch|[47m OPTIONS [0m /v1/user/login
 2019/07/01 13:46:08.020 [D] [server.go:2774]  |   172.30.50.62|[42m 200 [0m|     1.9967ms|   match|[46m POST    [0m /v1/user/login   r:/v1/user/login
+2019/07/02 10:40:11.626 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:36.631 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:38.050 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:39.608 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:41.030 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:42.512 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:44.126 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:46.095 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:48.070 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:50.194 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:16:52.044 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:21:45.598 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:35:46.853 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:37:58.356 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:38:10.279 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:41:58.256 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:42:06.592 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:45:47.228 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:47:53.577 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/02 13:53:31.102 [D] [server.go:2774]  |            ::1|[42m 200 [0m|      1.995ms|   match|[44m GET     [0m /swagger/
+2019/07/02 13:53:31.123 [D] [server.go:2774]  |            ::1|[42m 200 [0m|     4.9861ms|   match|[44m GET     [0m /swagger/swagger-ui.css
+2019/07/02 13:53:31.139 [D] [server.go:2774]  |            ::1|[42m 200 [0m|    20.9454ms|   match|[44m GET     [0m /swagger/swagger-ui-bundle.js
+2019/07/02 13:53:31.139 [D] [server.go:2774]  |            ::1|[42m 200 [0m|    19.9461ms|   match|[44m GET     [0m /swagger/swagger-ui-standalone-preset.js
+2019/07/02 13:53:32.033 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/swagger.json
+2019/07/02 13:59:36.639 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|   1.5565419s|   match|[46m POST    [0m /v1/user/register   r:/v1/user/register
+2019/07/02 14:01:20.439 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|     1.9998ms|   match|[46m POST    [0m /v1/user/login   r:/v1/user/login
+2019/07/02 14:01:53.552 [D] [server.go:2774]  |      127.0.0.1|[42m 200 [0m|   916.1189ms|   match|[46m POST    [0m /v1/user/login   r:/v1/user/login
+2019/07/03 09:20:07.067 [I] [asm_amd64.s:1337]  http server Running on http://:6700
+2019/07/03 09:20:36.471 [D] [server.go:2774]  |            ::1|[42m 200 [0m|           0s|   match|[44m GET     [0m /swagger/swagger.json

@@ -55,9 +55,13 @@ func AddUser(u User) interface{} {
 
 				return responseData
 			}
-			Conn.Create(&u)
 
+			hashPassword, _ := HashPassword(u.Password)
+			u.Password = hashPassword
+
+			Conn.Create(&u)
 			Conn.AutoMigrate(&Roles{})
+
 			getDefaultRole := CreateDefaultRole(u)
 			Conn.Create(&getDefaultRole)
 			SendRegistrationEmail(u)
@@ -142,17 +146,25 @@ func Login(username, password string) (code int, user User) {
 		if findUsername != nil && findUsername.Error != nil {
 			return 404, u
 		}
-
-		if u.Password != password {
+		passwordMatch := CheckPasswordHash(password, u.Password)
+		if passwordMatch != true {
 			return 401, u
 		}
+		// if u.Password != password {
+		// 	return 401, u
+		// }
 
 		return 200, u
 
 	}
-	if password != u.Password {
+	passwordMatch := CheckPasswordHash(password, u.Password)
+	if passwordMatch != true {
 		return 401, u
 	}
+
+	// if password != u.Password {
+	// 	return 401, u
+	// }
 
 	return 200, u
 }
